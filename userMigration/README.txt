@@ -15,4 +15,4 @@ C:\Users\KGray
 
 net use P: \\SAUGFSK\Gray /user:townhall\administrator Saugadmin1
 
-.\moveFolder2NetDrive.ps1 -source "C:\Users\KGray" -destination "P:" -username "townhall\administrator" -password 'Saugadmin1'
+.\moveFolder2NetDrive.ps1 -source "C:\Users\" -destination "P:" -username "townhall\administrator" -password ''
