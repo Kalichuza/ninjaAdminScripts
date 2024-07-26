@@ -1,3 +1,5 @@
+Certainly! Here’s how you can combine all these instructions into one cohesive set of instructions for your script. This will be suitable for a README.md file for your GitHub project.
+
 ```markdown
 # User Folder Cleanup and Profile Transfer Script
 
