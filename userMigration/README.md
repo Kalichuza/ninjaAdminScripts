@@ -1,24 +1,16 @@
 # User Folder Cleanup and Profile Transfer Script
 
-This repository contains two PowerShell scripts:
-1. A script to delete a user's folder from the system.
-2. A script to transfer the folder to a network drive.
+This repository contains several PowerShell scripts:
+1. Several scripts to transfer a user's profile directory to another location. 
+2. A to delete a user's folder from the system.
+
 
 ## Prerequisites
 
 - Ensure PowerShell is installed on your target machine.
 - Make sure you have the necessary permissions to delete user folders and create network drives.
 
-## 1. User Folder Cleanup Script
-
-### Usage Instructions
-
-1. Run the script to delete the user folder:
-    ```powershell
-    .\RemoveUserFolder.ps1 -folderName "username"
-    ```
-
-## 2. Profile Transfer Script
+## 1. Profile Transfer Script
 
 ### Usage Instructions
 
@@ -29,13 +21,24 @@ This repository contains two PowerShell scripts:
     net use J: \\SERVER\Path\To\NetDrive /user:domain\administrator P4ssWord
     ```
 
-3. Initiate the transfer:
+4. Initiate the transfer from an admin account:
     ```powershell
     .\moveFolder2NetDrive.ps1 -source "C:\Path\To\Origin" -destination "J:" -username "domain\administrator" -password 'PassWord'
     ```
-
-4. On the target machine, map the J: drive and reverse the transfer to the new profile:
+5. On the target machine, create a new local user; sign in an out with that profile.
+6. Then, map the J: drive and reverse the transfer to the new profile:
     ```powershell
     net use J: \\SERVER\Path\To\NetDrive /user:domain\administrator P4ssWord
     .\moveFolder2NetDrive.ps1 -source "J:" -destination "C:\Users\NewProfile" -username "domain\administrator" -password 'PassWord'
     ```
+7. Use a tool such as ProfWiz to point windows to the location of the new user profile directory.
+
+## 2. User Folder Cleanup Script
+
+### Usage Instructions
+
+1. Run the script to delete the user folder:
+    ```powershell
+    .\RemoveUserFolder.ps1 -folderName "username"
+    ```
+
