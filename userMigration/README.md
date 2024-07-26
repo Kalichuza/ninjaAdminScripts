@@ -25,7 +25,7 @@ This repository contains several PowerShell scripts:
     ```powershell
     .\moveUserAll.ps1 -source "C:\Path\To\Origin" -destination "J:" -username "domain\administrator" -password 'PassWord'
     ```
-5. On the target machine, create a new local user; sign in an out with that profile.
+5. On the target machine, create a new local user; sign in and out with that profile.
 6. Then, map the J: drive and reverse the transfer to the new profile:
     ```powershell
     net use J: \\SERVER\Path\To\NetDrive /user:domain\administrator P4ssWord
