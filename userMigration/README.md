@@ -1,4 +1,4 @@
-# User Folder Cleanup and Profile Transfer Script
+# Windows User Folder Cleanup and Profile Transfer Script
 
 This repository contains several PowerShell scripts:
 1. Several scripts to transfer a user's profile directory to another location. 
