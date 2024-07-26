@@ -1,5 +1,6 @@
-# Set the username variable from an environment variable
-#$folderName = $env:folderName
+param (
+    [string]$folderName
+)
 
 # Define the user folder path
 $userFolderPath = "C:\Users\$folderName"
