@@ -23,13 +23,13 @@ This repository contains several PowerShell scripts:
 
 4. Initiate the transfer from an admin account:
     ```powershell
-    .\moveFolder2NetDrive.ps1 -source "C:\Path\To\Origin" -destination "J:" -username "domain\administrator" -password 'PassWord'
+    .\moveUserAll.ps1 -source "C:\Path\To\Origin" -destination "J:" -username "domain\administrator" -password 'PassWord'
     ```
 5. On the target machine, create a new local user; sign in an out with that profile.
 6. Then, map the J: drive and reverse the transfer to the new profile:
     ```powershell
     net use J: \\SERVER\Path\To\NetDrive /user:domain\administrator P4ssWord
-    .\moveFolder2NetDrive.ps1 -source "J:" -destination "C:\Users\NewProfile" -username "domain\administrator" -password 'PassWord'
+    .\moveUserAll.ps1 -source "J:" -destination "C:\Users\NewProfile" -username "domain\administrator" -password 'PassWord'
     ```
 7. Use a tool such as ProfWiz to point windows to the location of the new user profile directory.
 
