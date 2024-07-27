@@ -1,0 +1,7 @@
+First test the connection in a PowerShell window with admin privileges:
+Test-ComputerSecureChannel -Credential (Get-Credential) -Verbose
+Then, if broken, repair the connectivity:
+Test-ComputerSecureChannel -Credential (Get-Credential) -Verbose -Repair
+You can also use this command to check the connection to the domain.
+Get-ComputerInfo | Select-Object -ExpandProperty CsDomain
+
