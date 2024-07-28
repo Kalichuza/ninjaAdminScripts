@@ -6,7 +6,10 @@ param (
     [switch]$Flag2 = $false,
 
     [Parameter(Mandatory=$false)]
-    [switch]$Flag3 = $false
+    [switch]$Flag3 = $false,
+
+    [Parameter(Mandatory=$false)]
+    [string]$SomeOtherArg
 )
 
 if ($Flag1) {
@@ -27,4 +30,8 @@ if ($Flag3) {
     Write-Output "Flag3 is not set."
 }
 
-Write-Host "You have successfully ran this code remotely"
+if ($SomeOtherArg) {
+    Write-Output "SomeOtherArg: $SomeOtherArg"
+} else {
+    Write-Output "SomeOtherArg is not set."
+}
