@@ -9,7 +9,7 @@
     The URL of the MSI file to download.
 
 .PARAMETER filename
-    The name to save the downloaded MSI file as.
+    The name to save the downloaded MSI file as (without the .msi extension).
 
 .EXAMPLE
     .\DownloadAndInstallMSI.ps1 -url "http://example.com/file.msi" -filename "setup"
