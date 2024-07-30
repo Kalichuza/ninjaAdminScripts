@@ -129,60 +129,12 @@ This guide provides step-by-step instructions to create and deploy a custom Wind
 
 1. **Create an Unattended Installation File**:
    - Create an `unattend.xml` file with the following content and save it in the `C:\WinISO` directory:
-     ```xml
-     <?xml version="1.0" encoding="utf-8"?>
-     <unattend xmlns="urn:schemas-microsoft-com:unattend">
-       <settings pass="windowsPE">
-         <component name="Microsoft-Windows-International-Core-WinPE" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
-           <SetupUILanguage>
-             <UILanguage>en-US</UILanguage>
-           </SetupUILanguage>
-           <InputLocale>en-US</InputLocale>
-           <SystemLocale>en-US</SystemLocale>
-           <UILanguage>en-US</UILanguage>
-           <UserLocale>en-US</UserLocale>
-         </component>
-         <component name="Microsoft-Windows-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
-           <UserData>
-             <AcceptEula>true</AcceptEula>
-             <FullName>Your Name</FullName>
-             <Organization>Your Organization</Organization>
-             <ProductKey>XXXXX-XXXXX-XXXXX-XXXXX-XXXXX</ProductKey> <!-- Optional -->
-           </UserData>
-           <ImageInstall>
-             <OSImage>
-               <InstallFrom>
-                 <MetaData wcm:action="add">
-                   <Key>/IMAGE/INDEX</Key>
-                   <Value>1</Value>
-                 </MetaData>
-               </InstallFrom>
-               <InstallTo>
-                 <DiskID>0</DiskID>
-                 <PartitionID>1</PartitionID>
-               </InstallTo>
-             </OSImage>
-           </ImageInstall>
-         </component>
-       </settings>
-       <settings pass="specialize">
-         <component name="Microsoft-Windows-Shell-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
-           <ComputerName>YOUR-PC</ComputerName>
-           <TimeZone>Pacific Standard Time</TimeZone>
-           <RegisteredOwner>Your Name</RegisteredOwner>
-           <RegisteredOrganization>Your Organization</RegisteredOrganization>
-         </component>
-       </settings>
-       <settings pass="oobeSystem">
-         <component name="Microsoft-Windows-International-Core" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
-           <InputLocale>en-US</InputLocale>
-           <SystemLocale>en-US</SystemLocale>
-           <UILanguage>en-US</UILanguage>
-           <UserLocale>en-US</UserLocale>
-         </component>
-         <component name="Microsoft-Windows-Shell-Setup" processorArchitecture="amd64" publicKeyToken="31bf3856ad364e35" language="neutral" versionScope="nonSxS">
-           <OOBE>
-             <HideEULAPage>true</HideEULAPage>
-             <NetworkLocation>Work</NetworkLocation>
-             <ProtectYourPC>3</ProtectYourPC>
-          
+
+## Step 6
+**Create New ISO File**
+1. Download and install the Windows ADK (Assessment and Deployment Kit) if not already installed.
+2. Open the "Deployment and Imaging Tools Environment" as an administrator from the Start menu.
+3. Use the oscdimg tool to create a new ISO file:
+   ```cmd
+   oscdimg -n -m -bC:\WinISO\boot\etfsboot.com C:\WinISO C:\CustomWindows.iso
+   ```
