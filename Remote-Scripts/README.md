@@ -56,4 +56,23 @@ Here's an example of how to use these scripts:
 
     This command downloads and executes the `test.ps1` script from the specified GitHub repository without saving it to the local file system.
 
+
+# Download and Install MSI Script
+
+This script downloads an MSI file from a specified URL, installs it, and then deletes the downloaded file. It uses `curl` for downloading and `msiexec` for installation.
+
+## Prerequisites
+
+- PowerShell
+- `curl` must be installed and accessible in your system's PATH.
+- The URL must point to a valid MSI file.
+
+## Usage
+
+To use the script, provide the URL of the MSI file and the filename to save the downloaded MSI file as using the `-url` and `-filename` parameters.
+
+```powershell
+.\DownloadAndInstallMSI.ps1 -url "http://example.com/file.msi" -filename "setup"
+
+
 These scripts are useful for automating the process of fetching and running remote PowerShell scripts, making it easier to manage and deploy scripts across multiple systems.
