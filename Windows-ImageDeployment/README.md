@@ -136,5 +136,6 @@ This guide provides step-by-step instructions to create and deploy a custom Wind
 2. Open the "Deployment and Imaging Tools Environment" as an administrator from the Start menu.
 3. Use the oscdimg tool to create a new ISO file:
    ```cmd
-   oscdimg -n -m -bC:\WinISO\boot\etfsboot.com C:\WinISO C:\CustomWindows.iso
+   oscdimg -u2 -udfver102 -bootdata:2#p0,e,bC:\<pathtoprepfiles>\boot\etfsboot.com#pEF,e,bC:\<pathtoprepfiles>\efi\Microsoft\boot\efisys.bin -lCustomWindowsISO -n -m C:\WinISO C:\CustomWindows.iso
+
    ```
