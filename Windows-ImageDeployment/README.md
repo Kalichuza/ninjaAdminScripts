@@ -135,7 +135,31 @@ This guide provides step-by-step instructions to create and deploy a custom Wind
 1. Download and install the Windows ADK (Assessment and Deployment Kit) if not already installed.
 2. Open the "Deployment and Imaging Tools Environment" as an administrator from the Start menu.
 3. Use the oscdimg tool to create a new ISO file:
-   ```cmd
-   oscdimg -u2 -udfver102 -bootdata:2#p0,e,bC:\<pathtoprepfiles>\boot\etfsboot.com#pEF,e,bC:\<pathtoprepfiles>\efi\Microsoft\boot\efisys.bin -lCustomWindowsISO -n -m C:\WinISO C:\CustomWindows.iso
 
-   ```
+```cmd
+oscdimg -u2 -udfver102 -bootdata:2#p0,e,b<path_to_working_directory>\boot\etfsboot.com#pEF,e,b<path_to_working_directory>\efi\Microsoft\boot\efisys.bin -l<Volume_Label> -m <path_to_working_directory> <path_to_output_iso>
+```
+
+### Explanation of Placeholders:
+
+- `<path_to_working_directory>`: The directory containing the customized Windows files (e.g., `C:\WinISO`).
+- `<Volume_Label>`: The volume label for the ISO (e.g., `CustomWindowsISO`).
+- `<path_to_output_iso>`: The output path for the generated ISO file (e.g., `C:\CustomWindows.iso`).
+
+### Example Usage in README:
+
+## Creating a UEFI Bootable ISO
+
+After customizing your Windows installation and creating the necessary files, use the following command to create a UEFI bootable ISO:
+
+```cmd
+oscdimg -u2 -udfver102 -bootdata:2#p0,e,b<path_to_working_directory>\boot\etfsboot.com#pEF,e,b<path_to_working_directory>\efi\Microsoft\boot\efisys.bin -l<Volume_Label> -m <path_to_working_directory> <path_to_output_iso>
+```
+
+### Example Command
+
+```cmd
+oscdimg -u2 -udfver102 -bootdata:2#p0,e,bC:\WinISO\boot\etfsboot.com#pEF,e,bC:\WinISO\efi\Microsoft\boot\efisys.bin -lCustomWindowsISO -m C:\WinISO C:\CustomWindows.iso
+```
+
+This command ensures that the resulting ISO file will be capable of booting in both UEFI and BIOS modes.
