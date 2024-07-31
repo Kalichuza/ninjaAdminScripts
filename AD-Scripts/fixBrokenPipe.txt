@@ -7,3 +7,5 @@ Get-ComputerInfo | Select-Object -ExpandProperty CsDomain
 
 #Run a Replication Job to correct possible issues with multi dc environments
 C:\Windows\system32>repadmin /syncall /AeD
+
+PushTEst
