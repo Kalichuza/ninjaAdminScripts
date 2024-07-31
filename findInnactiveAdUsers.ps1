@@ -1,8 +1,32 @@
+<#
+.SYNOPSIS
+    This script identifies and lists inactive Active Directory user accounts.
+
+.DESCRIPTION
+    The script checks for user accounts that have been inactive for a specified number of days.
+    It outputs the list of inactive user accounts to both the console and a text file in the temporary folder.
+
+.PARAMETER numberOfDaysInactive
+    The number of days of inactivity to consider a user as inactive.
+
+.EXAMPLE
+    .\Check-InactiveUsers.ps1 -numberOfDaysInactive 90
+
+.NOTES
+    The script requires the Active Directory module.
+#>
+
+[CmdletBinding()]
+param (
+    [Parameter(Mandatory = $true, HelpMessage = "Number of days to consider a user inactive.")]
+    [int]$numberOfDaysInactive
+)
+
+# Import Active Directory module
 Import-Module ActiveDirectory
 
 # Define the time span for inactivity
-$daysInactive = $env:numberOfDaysInactive
-$timeLimit = (Get-Date).AddDays(-$daysInactive)
+$timeLimit = (Get-Date).AddDays(-$numberOfDaysInactive)
 
 # Get all AD user accounts that have been inactive longer than the time limit
 $inactiveUsers = Get-ADUser -Filter 'Enabled -eq $true -and LastLogonDate -lt $timeLimit' -Properties LastLogonDate, samAccountName | where { $_.Enabled -eq $true }
