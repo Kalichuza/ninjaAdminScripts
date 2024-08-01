@@ -25,3 +25,18 @@ Install-Module -Name Microsoft.WinGet.Client
 ```
 Install-Module -Name 7Zip4Powershell
 ```
+
+- A module for interacting with User
+```
+Install-Module -Name SecurityPolicy
+```
+
+- Capture and parse CDP and LLDP packets on local or remote computers
+```
+Install-Module -Name PSDiscoveryProtocol
+```
+
+- PGP encryption module
+```
+Install-Module -Name PSPGP
+```
