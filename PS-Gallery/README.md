@@ -36,7 +36,7 @@ Install-Module -Name SecurityPolicy
 Install-Module -Name PSDiscoveryProtocol
 ```
 
-- PGP encryption module
+- PGP encryption module | https://github.com/EvotecIT/PSPGP/blob/master/README.MD
 ```
 Install-Module -Name PSPGP
 ```
