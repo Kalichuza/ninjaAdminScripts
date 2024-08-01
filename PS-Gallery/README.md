@@ -5,7 +5,7 @@
 Install-Module -Name jakoby-b64
 Install-Module -Name emoji.64
 ```
--A DNS Security Module 
+- A DNS Security Testin Module 
 ```
 Install-Module -Name dns
 ```
