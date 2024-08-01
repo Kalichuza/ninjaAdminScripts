@@ -11,7 +11,7 @@ Install-Module -Name dns
 ```
 
 - CleanUpMonster 
-    https://github.com/EvotecIT/CleanupMonster
+|    https://github.com/EvotecIT/CleanupMonster
 ```
 Install-Module -Name CleanupMonster -Force -Verbose
 ```
