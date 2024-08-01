@@ -5,7 +5,7 @@
     Enter the path to the file you want to use into the private key variable and run the command with the appropriate parameters.
 
 .EXAMPLE
- .\pgpDecrypt.ps1 -File2Decrypt_Input "C:\path\to\yourfile.txt.pgp" -File2Decrypt_Output "C:\path\to\yourfile.txt" -Password (Read-Host -AsSecureString "Enter password")
+ .\pgpDecryptFile.ps1 -File2Decrypt_Input "C:\path\to\yourfile.txt.pgp" -File2Decrypt_Output "C:\path\to\yourfile.txt" -Password (Read-Host -AsSecureString "Enter password")
 #>
 
 # Checks to make sure the pspgp module is installed

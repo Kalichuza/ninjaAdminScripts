@@ -6,7 +6,7 @@
     Enter in the path to the file you want to use into the  public key variable and run the command with the appropriate parameters 
 
 .EXAMPLE
- .\pgpEncrypt.ps1 -File2Encrypt_Input "C:\path\to\yourfile.txt" -File2Encrypt_Output "C:\path\to\yourfile.txt.pgp"
+ .\pgpEncryptFile.ps1 -File2Encrypt_Input "C:\path\to\yourfile.txt" -File2Encrypt_Output "C:\path\to\yourfile.txt.pgp"
    
 #>
 
