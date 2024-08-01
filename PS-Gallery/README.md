@@ -64,3 +64,7 @@ A Cross-Platform PowerShell framework for creating web servers to host REST APIs
 ```powershell
 Install-Module -Name Pode
 ```
+
+- PSWritePDF 0.0.20
+Little project to create, read, modify, split, merge PDF files on Windows, Linux and Mac.
+```powershell
