@@ -52,9 +52,9 @@ For a File:
    .\pgpEncrypt.ps1 -File2Encrypt_Input "C:\path\to\yourfile.txt" -File2Encrypt_Output "C:\path	o\yourfile.txt.pgp"
    ```
 For a Folder:
-```powershell
+  ```powershell
    .\pgpEncryptdir.ps1 -InputDirectory "C:\path\to\directory" -OutputDirectory "C:\path\to\output\directory"
-```
+  ```
 ## Decrypt a File or Folder
 
 1. Open PowerShell.
