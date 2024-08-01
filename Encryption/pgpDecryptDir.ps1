@@ -43,6 +43,11 @@ function Decrypt-PgpDirectory {
         Write-Host "PSPGP Module was already installed"
     }
 
+    # Check if the output directory exists, if not, create it
+    if (-not (Test-Path -Path $OutputDirectory)) {
+        New-Item -ItemType Directory -Path $OutputDirectory
+    }
+
     # Path to your private key
     $privateKey = "C:\Path\to\private.key"
 
@@ -55,8 +60,13 @@ function Decrypt-PgpDirectory {
 
     foreach ($file in $files) {
         $outputFile = Join-Path -Path $OutputDirectory -ChildPath ($file.Name -replace "\.pgp$", "")
-        Unprotect-PGP -FilePathPrivate $privateKey -FilePath $file.FullName -OutFilePath $outputFile -Password $PlainTextPassword
-        Write-Host "Decrypted: $($file.FullName) to $outputFile"
+        try {
+            Unprotect-PGP -FilePathPrivate $privateKey -FilePath $file.FullName -OutFilePath $outputFile -Password $PlainTextPassword
+            Write-Host "Decrypted: $($file.FullName) to $outputFile"
+        }
+        catch {
+            Write-Warning "Failed to decrypt file $($file.FullName): $_"
+        }
     }
 
     # Free the BSTR memory
