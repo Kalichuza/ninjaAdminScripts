@@ -97,3 +97,9 @@ Convert simplifies object conversions by exposing common requirements as PowerSh
 ```powershell
 Install-Module -Name Convert
 ```
+
+- NinjaRmmApi 1.0.2
+An unofficial PowerShell module to interact with NinjaRMM.
+```powershell
+Install-Module -Name NinjaRmmApi
+```
