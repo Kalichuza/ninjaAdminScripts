@@ -80,3 +80,9 @@ Testimo is a PowerShell Module to help with basic/more advanced testing of Activ
 ```powershell
 Install-Module -Name Testimo -AllowClobber -Force
 ```
+
+- ADEssentials | https://github.com/EvotecIT/ADEssentials
+ADEssentials PowerShell module contains a set of commands that are useful for day to day activities when working with Active Directory
+```powershell
+Install-Module -Name ADEssentials -AllowClobber -Force
+```
