@@ -87,3 +87,13 @@ ADEssentials PowerShell module contains a set of commands that are useful for da
 Install-Module -Name ADEssentials -AllowClobber -Force
 ```
 
+- Microsoft.PowerShell.ConsoleGuiTools 
+```powershell
+Install-Module -Name Microsoft.PowerShell.ConsoleGuiTools
+```
+
+- Convert 1.5.0
+Convert simplifies object conversions by exposing common requirements as PowerShell functions.
+```powershell
+Install-Module -Name Convert
+```
