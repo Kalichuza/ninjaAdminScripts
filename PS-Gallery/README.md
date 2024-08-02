@@ -68,3 +68,9 @@ Install-Module -Name Pode
 - PSWritePDF 0.0.20
 Little project to create, read, modify, split, merge PDF files on Windows, Linux and Mac.
 ```powershell
+Install-Module -Name PSWritePDF
+```
+- GPOZaurr | https://evotec.xyz/the-only-command-you-will-ever-need-to-understand-and-fix-your-group-policies-gpo/ | https://github.com/EvotecIT/GPOZaurr
+```powershell
+Install-Module -Name GPOZaurr -AllowClobber -Force
+```
