@@ -74,3 +74,9 @@ Install-Module -Name PSWritePDF
 ```powershell
 Install-Module -Name GPOZaurr -AllowClobber -Force
 ```
+
+- Testimo - PowerShell Module | https://github.com/EvotecIT/Testimo
+Testimo is a PowerShell Module to help with basic/more advanced testing of Active Directory and maybe in future other types of servers.
+```powershell
+Install-Module -Name Testimo -AllowClobber -Force
+```
