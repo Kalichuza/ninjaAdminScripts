@@ -70,22 +70,7 @@ Little project to create, read, modify, split, merge PDF files on Windows, Linux
 ```powershell
 Install-Module -Name PSWritePDF
 ```
-- GPOZaurr | https://evotec.xyz/the-only-command-you-will-ever-need-to-understand-and-fix-your-group-policies-gpo/ | https://github.com/EvotecIT/GPOZaurr
-```powershell
-Install-Module -Name GPOZaurr -AllowClobber -Force
-```
 
-- Testimo - PowerShell Module | https://github.com/EvotecIT/Testimo
-Testimo is a PowerShell Module to help with basic/more advanced testing of Active Directory and maybe in future other types of servers.
-```powershell
-Install-Module -Name Testimo -AllowClobber -Force
-```
-
-- ADEssentials | https://github.com/EvotecIT/ADEssentials
-ADEssentials PowerShell module contains a set of commands that are useful for day to day activities when working with Active Directory
-```powershell
-Install-Module -Name ADEssentials -AllowClobber -Force
-```
 
 - Microsoft.PowerShell.ConsoleGuiTools 
 ```powershell
@@ -102,4 +87,41 @@ Install-Module -Name Convert
 An unofficial PowerShell module to interact with NinjaRMM.
 ```powershell
 Install-Module -Name NinjaRmmApi
+```
+
+**Active Directory**
+
+- PSSharedGoods 
+This module contains various cmdlets that simplify Active Directory management tasks, such as user and group management. It's a community-driven module with practical functions to help with everyday AD tasks.
+```powershell
+Install-Module PSSharedGoods -Scope CurrentUser
+```
+
+- AdminToolbox.ActiveDirectory | https://github.com/TheTaylorLee/AdminToolbox/
+Functions for Active Directory
+```powershell
+Install-Module -Name AdminToolbox.ActiveDirectory
+```
+
+- ModernActiveDirectory | https://github.com/dakhama-mehdi/Modern_ActiveDirectory
+New experience (Safe, Easy, Fast) given an overview of Active Directory environment from a beautiful interactive HTML report
+```powershell
+Install-Module -Name ModernActiveDirectory
+```
+
+- GPOZaurr | https://evotec.xyz/the-only-command-you-will-ever-need-to-understand-and-fix-your-group-policies-gpo/ | https://github.com/EvotecIT/GPOZaurr
+```powershell
+Install-Module -Name GPOZaurr -AllowClobber -Force
+```
+
+- Testimo - PowerShell Module | https://github.com/EvotecIT/Testimo
+Testimo is a PowerShell Module to help with basic/more advanced testing of Active Directory and maybe in future other types of servers.
+```powershell
+Install-Module -Name Testimo -AllowClobber -Force
+```
+
+- ADEssentials | https://github.com/EvotecIT/ADEssentials
+ADEssentials PowerShell module contains a set of commands that are useful for day to day activities when working with Active Directory
+```powershell
+Install-Module -Name ADEssentials -AllowClobber -Force
 ```
