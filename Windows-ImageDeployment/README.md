@@ -1,7 +1,7 @@
 Here’s a complete guide to creating a bootable USB drive using OSDCloud and Windows Configuration Designer (WCD) to install the NinjaOne agent during the Windows provisioning process. This guide includes all the corrected and necessary steps:
 
 ### **Step 1: Prepare Your Environment**
-
+[Unattennded install xml Generator:](https://schneegans.de/windows/unattend-generator/)
 #### **Install Prerequisites**
 1. **Windows Assessment and Deployment Kit (ADK)**:
    - Download and install the Windows ADK from the [official Microsoft site](https://learn.microsoft.com/en-us/windows-hardware/get-started/adk-install).
