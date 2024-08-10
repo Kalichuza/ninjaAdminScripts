@@ -1,109 +1,102 @@
-Let's break down the steps and concepts presented in the instructions for device provisioning using NinjaOne and OSDCloud. This process involves creating a bootable USB drive that can deploy Windows and automatically install the NinjaOne agent on a device. Here’s a detailed explanation:
+Certainly! Here’s a complete guide to creating a bootable USB drive using OSDCloud and Windows Configuration Designer (WCD) to install the NinjaOne agent during the Windows provisioning process. This guide includes all the corrected and necessary steps:
 
-### **Key Concepts Defined**
+### **Step 1: Prepare Your Environment**
 
-1. **Bootable USB**: A USB drive that contains an operating system or software that can be used to start (boot) a computer.
+#### **Install Prerequisites**
+1. **Windows Assessment and Deployment Kit (ADK)**:
+   - Download and install the Windows ADK from the [official Microsoft site](https://learn.microsoft.com/en-us/windows-hardware/get-started/adk-install).
 
-2. **Thin Image**: A minimal version of an operating system that is directly obtained from Microsoft. It contains the bare essentials to run the OS, with no additional software.
+2. **WinPE Add-on**:
+   - Install the Windows PE add-on, which provides the necessary tools for creating the WinPE environment.
 
-3. **NinjaOne Agent**: Software that manages IT tasks such as device monitoring, patch management, and application deployment.
+3. **Install Windows Configuration Designer**:
+   - Open PowerShell and run:
+     ```powershell
+     winget install --id Microsoft.WindowsConfigurationDesigner --source msstore
+     ```
+   - This installs the Windows Configuration Designer (WCD) needed to create the provisioning package.
 
-4. **OSDCloud**: A tool that automates the deployment of Windows 10/11 over the internet using PowerShell. It utilizes WinPE to partition the disk and download the OS from Microsoft.
+4. **Visual Studio Code with PowerShell Extension**:
+   - Download and install [VS Code](https://code.visualstudio.com/) and the PowerShell extension from the Extensions Marketplace.
 
-5. **Zero-Touch Provisioning**: A method where devices are automatically set up without manual intervention. It’s useful for deploying a large number of devices quickly.
+#### **Prepare the USB Drive**
+- Ensure you have a USB drive with at least 32 GB of space.
+- Insert the USB drive into your computer.
 
----
+### **Step 2: Create a Bootable USB with OSDCloud**
 
-### **Step-by-Step Breakdown**
+#### **Set Up the OSDCloud Workspace**
+1. **Run PowerShell Commands**:
+   - Open PowerShell as an Administrator and run the following commands:
+     ```powershell
+     Set-ExecutionPolicy RemoteSigned -Force
+     Install-Module OSD -Force
+     Import-Module OSD -Force
+     ```
 
-#### **1. Prepare the Environment**
+2. **Create the OSDCloud Workspace**:
+   - Set up the workspace by running:
+     ```powershell
+     New-OSDCloudWorkspace -WorkspacePath C:\OSDCloud
+     ```
 
-Before starting the provisioning process, you need to set up your environment with the following tools:
+3. **Create the Bootable USB Drive**:
+   - Run the following command to create a bootable USB:
+     ```powershell
+     New-OSDCloudUSB -WorkspacePath C:\OSDCloud
+     ```
 
-- **Windows ADK**: This toolkit helps assess and deploy Windows operating systems. It includes tools like DISM and WinPE, which are crucial for creating bootable media.
-  
-- **WinPE Add-on**: A lightweight OS that is used for installation and repair tasks. It’s an essential part of the boot process for OSDCloud.
+4. **Customize WinPE**:
+   - If you need to customize the WinPE environment further, you can use:
+     ```powershell
+     Edit-OSDCloudwinPE -workspacepath C:\OSDCloud -CloudDriver * -WebPSScript https://gist.githubusercontent.com/Jeffhunter88/ed338a1c3aab4ca6abd2dd68a329d53c/raw/osdcloud_config.ps1 -Verbose
+     ```
 
-- **Windows Configuration Designer**: A tool for creating provisioning packages, which are collections of settings, apps, and configurations that you want to apply to a Windows installation.
+### **Step 3: Prepare the NinjaOne Agent**
 
-- **USB Thumb Drive (32 GB)**: This will be used to create the bootable media.
+1. **Create Folder Structure on WinPE Partition**:
+   - Open the `WINPE (E:)` drive and create the following folder structure:
+     ```plaintext
+     E:\Automate\Provisioning\
+     ```
+   - Copy the NinjaOne agent MSI file into the `Provisioning` folder:
+     ```plaintext
+     E:\Automate\Provisioning\mcstechmainoffice6f5c6e-5.9.9652-windows-installer.msi
+     ```
 
-- **Ethernet Connection**: The target device must be connected via Ethernet to ensure it can download the OS and other necessary files from the internet.
+### **Step 4: Create the Provisioning Package with WCD**
 
-- **NinjaOne Agent MSI File**: The installer for the NinjaOne agent, which you will place on the USB drive.
+1. **Launch Windows Configuration Designer**:
+   - Open Windows Configuration Designer from the Start menu.
 
-- **VS Code with PowerShell Extension**: This is the editor where you will run the PowerShell scripts to create the bootable USB.
+2. **Start a New Project**:
+   - Choose **Provision desktop devices**.
+   - Provide a name and location for the project.
 
----
+3. **Set Up the Device**:
+   - Navigate through the wizard and configure device settings, network settings, and account management as needed.
 
-#### **2. Create a Bootable USB**
+4. **Add the NinjaOne Agent**:
+   - In the **Add applications** section, add the NinjaOne agent:
+     - Application Name: `NinjaOne Agent`
+     - Installer Path: `E:\Automate\Provisioning\mcstechmainoffice6f5c6e-5.9.9652-windows-installer.msi`
+   - Complete the rest of the configuration and save the package.
 
-**Steps:**
+5. **Export the Provisioning Package**:
+   - Save the provisioning package to the root of the WinPE partition on your USB drive.
 
-1. **Insert the USB Drive**:
-   - Plug the USB drive into your computer. This drive will be formatted and turned into a bootable device.
+### **Step 5: Boot and Deploy**
 
-2. **Open VS Code**:
-   - Launch VS Code and open the PowerShell script provided (or an example script). This script will handle the creation of the bootable USB.
+1. **Boot the Target Device**:
+   - Insert the USB drive into the target device and boot from the USB (usually by pressing F12 during startup).
 
-3. **Run the PowerShell Script**:
-   - The script will configure what is installed on the USB drive, including the OSDCloud environment and possibly the NinjaOne agent. Modify parameters as needed for your specific environment.
+2. **Zero-Touch Provisioning**:
+   - The device will boot into WinPE, automatically load the provisioning package, and install Windows along with the NinjaOne agent.
 
-4. **Install the NinjaOne Agent**:
-   - Use the command `msiexec /i "ninjaagentinstaller.msi" ContinueInstall=TRUE RestartRequired=FALSE` to install the NinjaOne agent via the provisioning package.
-   
-5. **Select the USB Drive**:
-   - You will be prompted to select the USB drive where the bootable media will be created.
-
-6. **Create Folders on the USB Drive**:
-   - Create a folder structure on the WinPE partition of the USB drive:
-     - **\Automate\Provisioning**: Place the NinjaOne agent MSI file in this directory.
-  
-   - The path should look like this: `\Automate\Provisioning\ninjaagentinstaller.msi`.
-
-7. **Optional: Unattend.xml File**:
-   - If you want to automate parts of the Windows setup (like skipping certain setup screens), create an `unattend.xml` file using an online tool. Place this file in the root of the WinPE partition.
-
----
-
-#### **3. Initiate the Provisioning Process**
-
-**Steps:**
-
-1. **Eject the USB Drive**:
-   - Safely remove the USB drive from your computer. This drive is now bootable and contains everything needed to provision a new device.
-
-2. **Insert the USB into the Target Device**:
-   - Connect the USB drive to the target device. Make sure the device is connected to the internet via Ethernet.
-
-3. **Boot the Device**:
-   - Power on the target device and enter the boot menu (usually by pressing F12 during startup). Select the USB drive as the boot device.
-
-4. **Zero-Touch Process**:
-   - After selecting the USB drive, the device will boot into WinPE and automatically start the Windows deployment process.
-   - Windows will be downloaded from Microsoft, installed on the device, and the `unattend.xml` file (if used) will handle any automated setup tasks.
-
-5. **NinjaOne Agent Installation**:
-   - The provisioning package on the USB drive will automatically install the NinjaOne agent after Windows is set up.
-
----
-
-#### **4. Begin Device Provision Phase Handled by NinjaOne**
-
-**Steps:**
-
-1. **NinjaOne Takes Over**:
-   - Once Windows is installed, the NinjaOne agent will begin managing the device. This includes:
-     - Deploying applications
-     - Installing antivirus/EDR software
-     - Applying endpoint hardening settings
-     - Managing patches and updates
-
-2. **Streamlined Provisioning**:
-   - The entire process ensures that each device is set up consistently, with minimal manual intervention. This is especially useful for deploying devices at scale.
-
----
+3. **Complete the Setup**:
+   - After the installation, Windows will be configured according to the settings in your provisioning package, including the installation of the NinjaOne agent.
 
 ### **Summary**
+This process ensures that you have a fully automated and streamlined deployment setup. By integrating OSDCloud and WCD, you can provision devices efficiently, with the NinjaOne agent installed as part of the setup. This approach helps minimize manual intervention and ensures consistency across devices.
 
-By following these steps, you can create a bootable USB drive that automates the deployment of Windows and the installation of the NinjaOne agent. This method is particularly valuable for large-scale deployments, allowing for efficient and consistent setup of multiple devices with minimal effort.
+If you follow these steps closely, you should be able to create a bootable USB that provisions Windows and installs the NinjaOne agent on any compatible device. Let me know if you encounter any issues or need further assistance!
