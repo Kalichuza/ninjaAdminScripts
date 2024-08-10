@@ -1,165 +1,109 @@
-# Creating and Deploying a Custom Windows Image
+Let's break down the steps and concepts presented in the instructions for device provisioning using NinjaOne and OSDCloud. This process involves creating a bootable USB drive that can deploy Windows and automatically install the NinjaOne agent on a device. Here’s a detailed explanation:
 
-This guide provides step-by-step instructions to create and deploy a custom Windows image with preinstalled software and settings, and then create an ISO for distribution.
+### **Key Concepts Defined**
 
-## Prerequisites
+1. **Bootable USB**: A USB drive that contains an operating system or software that can be used to start (boot) a computer.
 
-1. A reference computer with a clean installation of Windows.
-2. Required software and drivers installed on the reference computer.
-3. Windows ADK (Assessment and Deployment Kit) and Windows PE add-on.
+2. **Thin Image**: A minimal version of an operating system that is directly obtained from Microsoft. It contains the bare essentials to run the OS, with no additional software.
 
-## Step 1: Prepare the Reference Computer
+3. **NinjaOne Agent**: Software that manages IT tasks such as device monitoring, patch management, and application deployment.
 
-1. **Install Windows**:
-   - Start with a clean installation of Windows on a reference computer.
+4. **OSDCloud**: A tool that automates the deployment of Windows 10/11 over the internet using PowerShell. It utilizes WinPE to partition the disk and download the OS from Microsoft.
 
-2. **Install Software and Configure Settings**:
-   - Install all the necessary applications and configure the system settings as required.
-   - Update Windows and install drivers.
+5. **Zero-Touch Provisioning**: A method where devices are automatically set up without manual intervention. It’s useful for deploying a large number of devices quickly.
 
-3. **Create Default User Profile**:
-   - Configure the user profile with default settings.
-   - Copy the configured profile to the default user profile:
-     ```powershell
-     Copy-Item -Recurse -Force "C:\Users\YourUserProfile" "C:\Users\Default"
-     ```
+---
 
-## Step 2: Generalize the System
+### **Step-by-Step Breakdown**
 
-1. **Open Command Prompt as Administrator**:
-   - Run the Sysprep tool to generalize the system:
-     ```powershell
-     C:\Windows\System32\Sysprep\sysprep.exe /oobe /generalize /shutdown
-     ```
-   - The system will shut down after the process is complete.
+#### **1. Prepare the Environment**
 
-## Step 3: Capture the Image
+Before starting the provisioning process, you need to set up your environment with the following tools:
 
-### 3.1: Download and Install Windows ADK and Windows PE Add-on
+- **Windows ADK**: This toolkit helps assess and deploy Windows operating systems. It includes tools like DISM and WinPE, which are crucial for creating bootable media.
+  
+- **WinPE Add-on**: A lightweight OS that is used for installation and repair tasks. It’s an essential part of the boot process for OSDCloud.
 
-1. **Download Windows ADK**:
-   - [Download the Windows ADK 10.1.26100.1 (May 2024)](https://go.microsoft.com/fwlink/?linkid=2166081).
-   - Run the installer and select the required components (especially "Deployment Tools").
+- **Windows Configuration Designer**: A tool for creating provisioning packages, which are collections of settings, apps, and configurations that you want to apply to a Windows installation.
 
-2. **Download Windows PE Add-on**:
-   - [Download the Windows PE add-on for the Windows ADK 10.1.26100.1 (May 2024)](https://go.microsoft.com/fwlink/?linkid=2166164).
-   - Run the installer to add the Windows PE components to your ADK installation.
+- **USB Thumb Drive (32 GB)**: This will be used to create the bootable media.
 
-### 3.2: Create a Bootable Windows PE ISO
+- **Ethernet Connection**: The target device must be connected via Ethernet to ensure it can download the OS and other necessary files from the internet.
 
-1. **Create Windows PE Media**:
-   - Open the "Deployment and Imaging Tools Environment" as an administrator from the Start menu.
-   - Create a working directory for Windows PE files:
-     ```cmd
-     copype.cmd amd64 C:\WinPE_amd64
-     ```
+- **NinjaOne Agent MSI File**: The installer for the NinjaOne agent, which you will place on the USB drive.
 
-2. **Mount the Boot Image**:
-   - Mount the boot image to add custom files:
-     ```cmd
-     dism /Mount-Image /ImageFile:C:\WinPE_amd64\media\sources\boot.wim /index:1 /MountDir:C:\WinPE_amd64\mount
-     ```
+- **VS Code with PowerShell Extension**: This is the editor where you will run the PowerShell scripts to create the bootable USB.
 
-3. **Add Custom Files (Optional)**:
-   - If you need to add any custom scripts or files, copy them to the mounted image directory:
-     ```cmd
-     xcopy /s C:\Path\To\Your\Files C:\WinPE_amd64\mount\Your\Destination
-     ```
+---
 
-4. **Unmount and Commit the Changes**:
-   - Unmount the image and commit the changes:
-     ```cmd
-     dism /Unmount-Image /MountDir:C:\WinPE_amd64\mount /Commit
-     ```
+#### **2. Create a Bootable USB**
 
-5. **Create the ISO File**:
-   - Use the `MakeWinPEMedia` command to create an ISO file:
-     ```cmd
-     MakeWinPEMedia /ISO C:\WinPE_amd64 C:\WinPE_amd64\WinPE.iso
-     ```
+**Steps:**
 
-### 3.3: Boot the Reference Computer with Windows PE ISO
+1. **Insert the USB Drive**:
+   - Plug the USB drive into your computer. This drive will be formatted and turned into a bootable device.
 
-1. **Boot the Reference Computer**:
-   - Use virtual machine software (like Hyper-V, VMware, or VirtualBox) to boot the ISO, or burn the ISO to a DVD and boot the reference computer from it.
+2. **Open VS Code**:
+   - Launch VS Code and open the PowerShell script provided (or an example script). This script will handle the creation of the bootable USB.
 
-2. **Capture the Image Using DISM**:
-   - Once booted into Windows PE, you will see a command prompt.
-   - Use the `DISM` tool to capture the Windows image:
-     ```cmd
-     dism /capture-image /imagefile:D:\CustomImage.wim /capturedir:C:\ /name:"Custom Windows Image" /description:"Custom Windows Image with Preinstalled Software"
-     ```
-     - **/imagefile**: The path where the captured image will be saved. Replace `D:\CustomImage.wim` with the desired path (e.g., an external USB drive).
-     - **/capturedir**: The drive you want to capture, usually `C:\`.
-     - **/name**: A name for the image.
-     - **/description**: A description for the image.
+3. **Run the PowerShell Script**:
+   - The script will configure what is installed on the USB drive, including the OSDCloud environment and possibly the NinjaOne agent. Modify parameters as needed for your specific environment.
 
-3. **Wait for the Process to Complete**:
-   - The DISM tool will now capture the image of your reference computer and save it to the specified location. This process may take some time depending on the size of the installation.
+4. **Install the NinjaOne Agent**:
+   - Use the command `msiexec /i "ninjaagentinstaller.msi" ContinueInstall=TRUE RestartRequired=FALSE` to install the NinjaOne agent via the provisioning package.
+   
+5. **Select the USB Drive**:
+   - You will be prompted to select the USB drive where the bootable media will be created.
 
-## Step 4: Create a Custom Windows ISO with the Custom Image
+6. **Create Folders on the USB Drive**:
+   - Create a folder structure on the WinPE partition of the USB drive:
+     - **\Automate\Provisioning**: Place the NinjaOne agent MSI file in this directory.
+  
+   - The path should look like this: `\Automate\Provisioning\ninjaagentinstaller.msi`.
 
-### 4.1: Download and Mount a Windows ISO
+7. **Optional: Unattend.xml File**:
+   - If you want to automate parts of the Windows setup (like skipping certain setup screens), create an `unattend.xml` file using an online tool. Place this file in the root of the WinPE partition.
 
-1. **Download Windows ISO**:
-   - Download the Windows ISO file from Microsoft's official website.
+---
 
-2. **Mount the ISO**:
-   - Mount the Windows ISO file by double-clicking it or using right-click and selecting "Mount".
+#### **3. Initiate the Provisioning Process**
 
-### 4.2: Copy ISO Contents to a Working Directory
+**Steps:**
 
-1. **Create a Working Directory**:
-   - Create a directory to store the ISO contents, for example `C:\WinISO`.
-   - Copy all the contents of the mounted ISO to this directory:
-     ```cmd
-     xcopy D:\* C:\WinISO /E /H
-     ```
-   - Replace `D:` with the drive letter of your mounted ISO.
+1. **Eject the USB Drive**:
+   - Safely remove the USB drive from your computer. This drive is now bootable and contains everything needed to provision a new device.
 
-### 4.3: Replace the Install.wim File
+2. **Insert the USB into the Target Device**:
+   - Connect the USB drive to the target device. Make sure the device is connected to the internet via Ethernet.
 
-1. **Replace Install.wim**:
-   - Replace the `install.wim` file in the `C:\WinISO\sources` folder with your custom WIM file:
-     ```cmd
-     copy /y C:\Path\To\CustomImage.wim C:\WinISO\sources\install.wim
-     ```
+3. **Boot the Device**:
+   - Power on the target device and enter the boot menu (usually by pressing F12 during startup). Select the USB drive as the boot device.
 
-## Step 5: Create an Unattended Installation File
+4. **Zero-Touch Process**:
+   - After selecting the USB drive, the device will boot into WinPE and automatically start the Windows deployment process.
+   - Windows will be downloaded from Microsoft, installed on the device, and the `unattend.xml` file (if used) will handle any automated setup tasks.
 
-1. **Create an Unattended Installation File**:
-   - Create an `unattend.xml` file with the following content and save it in the `C:\WinISO` directory:
+5. **NinjaOne Agent Installation**:
+   - The provisioning package on the USB drive will automatically install the NinjaOne agent after Windows is set up.
 
-## Step 6
-**Create New ISO File**
-1. Download and install the Windows ADK (Assessment and Deployment Kit) if not already installed.
-2. Open the "Deployment and Imaging Tools Environment" as an administrator from the Start menu.
-3. Use the oscdimg tool to create a new ISO file:
+---
 
-```cmd
-oscdimg -u2 -udfver102 -bootdata:2#p0,e,b<path_to_working_directory>\boot\etfsboot.com#pEF,e,b<path_to_working_directory>\efi\Microsoft\boot\efisys.bin -l<Volume_Label> -m <path_to_working_directory> <path_to_output_iso>
-```
+#### **4. Begin Device Provision Phase Handled by NinjaOne**
 
-### Explanation of Placeholders:
+**Steps:**
 
-- `<path_to_working_directory>`: The directory containing the customized Windows files (e.g., `C:\WinISO`).
-- `<Volume_Label>`: The volume label for the ISO (e.g., `CustomWindowsISO`).
-- `<path_to_output_iso>`: The output path for the generated ISO file (e.g., `C:\CustomWindows.iso`).
+1. **NinjaOne Takes Over**:
+   - Once Windows is installed, the NinjaOne agent will begin managing the device. This includes:
+     - Deploying applications
+     - Installing antivirus/EDR software
+     - Applying endpoint hardening settings
+     - Managing patches and updates
 
-### Example Usage in README:
+2. **Streamlined Provisioning**:
+   - The entire process ensures that each device is set up consistently, with minimal manual intervention. This is especially useful for deploying devices at scale.
 
-## Creating a UEFI Bootable ISO
+---
 
-After customizing your Windows installation and creating the necessary files, use the following command to create a UEFI bootable ISO:
+### **Summary**
 
-```cmd
-oscdimg -u2 -udfver102 -bootdata:2#p0,e,b<path_to_working_directory>\boot\etfsboot.com#pEF,e,b<path_to_working_directory>\efi\Microsoft\boot\efisys.bin -l<Volume_Label> -m <path_to_working_directory> <path_to_output_iso>
-```
-
-### Example Command
-
-```cmd
-oscdimg -u2 -udfver102 -bootdata:2#p0,e,bC:\WinISO\boot\etfsboot.com#pEF,e,bC:\WinISO\efi\Microsoft\boot\efisys.bin -lCustomWindowsISO -m C:\WinISO C:\CustomWindows.iso
-```
-
-This command ensures that the resulting ISO file will be capable of booting in both UEFI and BIOS modes.
+By following these steps, you can create a bootable USB drive that automates the deployment of Windows and the installation of the NinjaOne agent. This method is particularly valuable for large-scale deployments, allowing for efficient and consistent setup of multiple devices with minimal effort.
