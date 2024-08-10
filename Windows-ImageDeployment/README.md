@@ -61,7 +61,7 @@ Here’s a complete guide to creating a bootable USB drive using OSDCloud and Wi
      ```
    - Copy the NinjaOne agent MSI file into the `Provisioning` folder:
      ```plaintext
-     <letterDrive>:\Automate\Provisioning\mcstechmainoffice6f5c6e-5.9.9652-windows-installer.msi
+     <letterDrive>:\Automate\Provisioning\Ninjatechmainoffice6f5c6e-5.9.9652-windows-installer.msi
      ```
 
 ### **Step 4: Create the Provisioning Package with WCD**
@@ -79,7 +79,7 @@ Here’s a complete guide to creating a bootable USB drive using OSDCloud and Wi
 4. **Add the NinjaOne Agent**:
    - In the **Add applications** section, add the NinjaOne agent:
      - Application Name: `NinjaOne Agent`
-     - Installer Path: `<letterDrive>:\Automate\Provisioning\mcstechmainoffice6f5c6e-5.9.9652-windows-installer.msi`
+     - Installer Path: `<letterDrive>:\Automate\Provisioning\Ninjatechmainoffice6f5c6e-5.9.9652-windows-installer.msi`
    - Complete the rest of the configuration and save the package.
 
 5. **Export the Provisioning Package**:
