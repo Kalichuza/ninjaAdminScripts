@@ -3,7 +3,7 @@ Here’s a complete guide to creating a bootable USB drive using OSDCloud and Wi
 ### **Step 1: Prepare Your Environment**
 
 **Skipping The OOBE Using unattend.xml**
-- You could use the below cookbook:
+- You could use the cookbook located here:
 [Unattennded install xml Generator:](https://schneegans.de/windows/unattend-generator/)
 
 - You could also use the included file in this repo. Here’s a clear list of all the values in the `unattend.xml` file that you will need to customize:
