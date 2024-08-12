@@ -15,6 +15,7 @@ Here’s a complete guide to creating a bootable USB drive using OSDCloud and Wi
 4. Replace `John Doe` with the registered owner name.
 5. Replace `ExampleCorp` with the registered organization name (optional).
 
+- Place the Final file into the root WinPE directory
 This ensures that the `unattend.xml` is tailored to your specific deployment needs.
 #### **Install Prerequisites**
 1. **Windows Assessment and Deployment Kit (ADK)**:
