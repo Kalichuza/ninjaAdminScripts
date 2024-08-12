@@ -1,7 +1,21 @@
 Here’s a complete guide to creating a bootable USB drive using OSDCloud and Windows Configuration Designer (WCD) to install the NinjaOne agent during the Windows provisioning process. This guide includes all the corrected and necessary steps:
 
 ### **Step 1: Prepare Your Environment**
+
+**Skipping The OOBE Using unattend.xml**
+- You could use the below cookbook:
 [Unattennded install xml Generator:](https://schneegans.de/windows/unattend-generator/)
+
+- You could also use the included file in this repo. Here’s a clear list of all the values in the `unattend.xml` file that you will need to customize:
+
+### Customization Instructions:
+1. Replace `examplepassword123` with your desired user password.
+2. Replace `ExampleUser` with the desired username.
+3. Replace `Primary User Account` with a description for the user account (optional).
+4. Replace `John Doe` with the registered owner name.
+5. Replace `ExampleCorp` with the registered organization name (optional).
+
+This ensures that the `unattend.xml` is tailored to your specific deployment needs.
 #### **Install Prerequisites**
 1. **Windows Assessment and Deployment Kit (ADK)**:
    - Download and install the Windows ADK from the [official Microsoft site](https://learn.microsoft.com/en-us/windows-hardware/get-started/adk-install).
@@ -22,42 +36,25 @@ Here’s a complete guide to creating a bootable USB drive using OSDCloud and Wi
 ### **Step 2: Create a Bootable USB with OSDCloud**
 
 #### **Set Up the OSDCloud Workspace**
-1. **Run PowerShell Commands**:
-   - Open PowerShell as an Administrator and run the following commands:
-     ```powershell
-     Set-ExecutionPolicy RemoteSigned -Force
-     Install-Module OSD -Force
-     Import-Module OSD -Force
-     ```
+1. **Run PowerShell Script New-NinjaWinPeUsb.ps1**:
+ - This will create the usb where you will place your customization files
 
-2. **Create the OSDCloud Workspace**:
-   - Set up the workspace by running:
+ **Customize WinPE**:
+   - If you need to customize the WinPE environment further, by accessing a different config script, you edit the line that reads:
      ```powershell
-     New-OSDCloudWorkspace -WorkspacePath C:\OSDCloud
-     ```
-
-3. **Create the Bootable USB Drive**:
-   - Run the following command to create a bootable USB:
-     ```powershell
-     New-OSDCloudUSB -WorkspacePath C:\OSDCloud
-     ```
-
-4. **Customize WinPE**:
-   - If you need to customize the WinPE environment further, you can use:
-     ```powershell
-     Edit-OSDCloudwinPE -workspacepath C:\OSDCloud -CloudDriver * -WebPSScript https://gist.githubusercontent.com/Jeffhunter88/ed338a1c3aab4ca6abd2dd68a329d53c/raw/osdcloud_config.ps1 -Verbose
+     Edit-OSDCloudwinPE -workspacepath C:\OSDCloud -CloudDriver * -WebPSScript <config URl> -Verbose
      ```
 
 ### **Step 3: Prepare the NinjaOne Agent**
 
 1. **Create Folder Structure on WinPE Partition**:
-   - Open the ` OSDCloudUSB (<letterDrive>:)` drive and create the following folder structure:
+   - Open the ` WinPE (<letterDrive>:)` drive partition and create the following folder structure:
      ```plaintext
      <letterDrive>:\OSDCloud\Automate\Provisioning\
      ```
-   - Copy the NinjaOne agent MSI file into the `Provisioning` folder:
+   - Copy MSI file into the `Provisioning` folder:
      ```plaintext
-     <letterDrive>:\OSDCloud\Automate\Provisioning\Ninjatechmainoffice6f5c6e-5.9.9652-windows-installer.msi
+     <letterDrive>:\OSDCloud\Automate\installer.msi
      ```
 
 ### **Step 4: Create the Provisioning Package with WCD**
@@ -72,14 +69,15 @@ Here’s a complete guide to creating a bootable USB drive using OSDCloud and Wi
 3. **Set Up the Device**:
    - Navigate through the wizard and configure device settings, network settings, and account management as needed.
 
-4. **Add the NinjaOne Agent**:
-   - In the **Add applications** section, add the NinjaOne agent:
-     - Application Name: `NinjaOne Agent`
-     - Installer Path: `<letterDrive>:\Automate\Provisioning\Ninjatechmainoffice6f5c6e-5.9.9652-windows-installer.msi`
-   - Complete the rest of the configuration and save the package.
+4. **Add the Apps**:
+   - In the **Add applications** section, add the app:
+     - Application Name: `App Name`
+     - Installer Path: `C:\Path\To\Installer\installer.msi`
+     - ContinueInstall: True
+     - RestartRequired: False
 
 5. **Export the Provisioning Package**:
-   - Save the provisioning package to the root of the WinPE partition on your USB drive.
+   - Copy the provisioning package to the the same folder as the installer msi one the USB.
 
 ### **Step 5: Boot and Deploy**
 
@@ -98,13 +96,3 @@ This process ensures that you have a fully automated and streamlined deployment 
 If you follow these steps closely, you should be able to create a bootable USB that provisions Windows and installs the NinjaOne agent on any compatible device. Let me know if you encounter any issues or need further assistance!
 
 
-Here’s a clear list of all the values in the `unattend.xml` file that you will need to customize:
-
-### Customization Instructions:
-1. Replace `examplepassword123` with your desired user password.
-2. Replace `ExampleUser` with the desired username.
-3. Replace `Primary User Account` with a description for the user account (optional).
-4. Replace `John Doe` with the registered owner name.
-5. Replace `ExampleCorp` with the registered organization name (optional).
-
-This ensures that the `unattend.xml` is tailored to your specific deployment needs.
