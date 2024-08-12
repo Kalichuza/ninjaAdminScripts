@@ -96,3 +96,15 @@ Here’s a complete guide to creating a bootable USB drive using OSDCloud and Wi
 This process ensures that you have a fully automated and streamlined deployment setup. By integrating OSDCloud and WCD, you can provision devices efficiently, with the NinjaOne agent installed as part of the setup. This approach helps minimize manual intervention and ensures consistency across devices.
 
 If you follow these steps closely, you should be able to create a bootable USB that provisions Windows and installs the NinjaOne agent on any compatible device. Let me know if you encounter any issues or need further assistance!
+
+
+Here’s a clear list of all the values in the `unattend.xml` file that you will need to customize:
+
+### Customization Instructions:
+1. Replace `examplepassword123` with your desired user password.
+2. Replace `ExampleUser` with the desired username.
+3. Replace `Primary User Account` with a description for the user account (optional).
+4. Replace `John Doe` with the registered owner name.
+5. Replace `ExampleCorp` with the registered organization name (optional).
+
+This ensures that the `unattend.xml` is tailored to your specific deployment needs.
