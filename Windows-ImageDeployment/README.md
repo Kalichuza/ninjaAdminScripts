@@ -10,11 +10,7 @@ Here’s a complete guide to creating a bootable USB drive using OSDCloud and Wi
    - Install the Windows PE add-on, which provides the necessary tools for creating the WinPE environment.
 
 3. **Install Windows Configuration Designer**:
-   - Open PowerShell and run:
-     ```powershell
-     winget install --id Microsoft.WindowsConfigurationDesigner --source msstore
-     ```
-   - This installs the Windows Configuration Designer (WCD) needed to create the provisioning package.
+   
 
 4. **Visual Studio Code with PowerShell Extension**:
    - Download and install [VS Code](https://code.visualstudio.com/) and the PowerShell extension from the Extensions Marketplace.
