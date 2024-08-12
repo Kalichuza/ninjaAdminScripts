@@ -57,11 +57,11 @@ Here’s a complete guide to creating a bootable USB drive using OSDCloud and Wi
 1. **Create Folder Structure on WinPE Partition**:
    - Open the ` OSDCloudUSB (<letterDrive>:)` drive and create the following folder structure:
      ```plaintext
-     <letterDrive>:\Automate\Provisioning\
+     <letterDrive>:\OSDCloud\Automate\Provisioning\
      ```
    - Copy the NinjaOne agent MSI file into the `Provisioning` folder:
      ```plaintext
-     <letterDrive>:\Automate\Provisioning\Ninjatechmainoffice6f5c6e-5.9.9652-windows-installer.msi
+     <letterDrive>:\OSDCloud\Automate\Provisioning\Ninjatechmainoffice6f5c6e-5.9.9652-windows-installer.msi
      ```
 
 ### **Step 4: Create the Provisioning Package with WCD**
