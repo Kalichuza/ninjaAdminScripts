@@ -16,27 +16,22 @@
                 <ProtectYourPC>3</ProtectYourPC>
             </OOBE>
             <UserAccounts>
-                <AdministratorPassword>
-                    <Value>youradminpassword</Value>
-                    <PlainText>true</PlainText>
-                </AdministratorPassword>
                 <LocalAccounts>
                     <LocalAccount wcm:action="add">
                         <Password>
-                            <Value>youruserpassword</Value>
+                            <Value>examplepassword123</Value>
                             <PlainText>true</PlainText>
                         </Password>
-                        <Description>Your User Account</Description>
-                        <DisplayName>YourUserName</DisplayName>
+                        <Description>Primary User Account</Description>
+                        <DisplayName>ExampleUser</DisplayName>
                         <Group>Administrators</Group>
-                        <Name>YourUserName</Name>
+                        <Name>ExampleUser</Name>
                     </LocalAccount>
                 </LocalAccounts>
             </UserAccounts>
-            <RegisteredOwner>YourNameHere</RegisteredOwner>
-            <RegisteredOrganization>YourOrganizationHere</RegisteredOrganization>
-            <TimeZone>UTC</TimeZone>
+            <RegisteredOwner>John Doe</RegisteredOwner>
+            <RegisteredOrganization>ExampleCorp</RegisteredOrganization>
+            <TimeZone>Eastern Standard Time</TimeZone>
         </component>
     </settings>
-    <cpi:offlineImage cpi:source="wim:c:/path/to/your/install.wim#Windows 10 Pro" xmlns:cpi="urn:schemas-microsoft-com:cpi" />
 </unattend>
