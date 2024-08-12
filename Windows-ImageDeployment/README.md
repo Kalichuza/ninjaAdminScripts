@@ -1,165 +1,102 @@
-# Creating and Deploying a Custom Windows Image
+Here’s a complete guide to creating a bootable USB drive using OSDCloud and Windows Configuration Designer (WCD) to install the NinjaOne agent during the Windows provisioning process. This guide includes all the corrected and necessary steps:
 
-This guide provides step-by-step instructions to create and deploy a custom Windows image with preinstalled software and settings, and then create an ISO for distribution.
+### **Step 1: Prepare Your Environment**
+[Unattennded install xml Generator:](https://schneegans.de/windows/unattend-generator/)
+#### **Install Prerequisites**
+1. **Windows Assessment and Deployment Kit (ADK)**:
+   - Download and install the Windows ADK from the [official Microsoft site](https://learn.microsoft.com/en-us/windows-hardware/get-started/adk-install).
 
-## Prerequisites
+2. **WinPE Add-on**:
+   - Install the Windows PE add-on, which provides the necessary tools for creating the WinPE environment.
 
-1. A reference computer with a clean installation of Windows.
-2. Required software and drivers installed on the reference computer.
-3. Windows ADK (Assessment and Deployment Kit) and Windows PE add-on.
-
-## Step 1: Prepare the Reference Computer
-
-1. **Install Windows**:
-   - Start with a clean installation of Windows on a reference computer.
-
-2. **Install Software and Configure Settings**:
-   - Install all the necessary applications and configure the system settings as required.
-   - Update Windows and install drivers.
-
-3. **Create Default User Profile**:
-   - Configure the user profile with default settings.
-   - Copy the configured profile to the default user profile:
+3. **Install Windows Configuration Designer**:
+   - Open PowerShell and run:
      ```powershell
-     Copy-Item -Recurse -Force "C:\Users\YourUserProfile" "C:\Users\Default"
+     winget install --id Microsoft.WindowsConfigurationDesigner --source msstore
      ```
+   - This installs the Windows Configuration Designer (WCD) needed to create the provisioning package.
 
-## Step 2: Generalize the System
+4. **Visual Studio Code with PowerShell Extension**:
+   - Download and install [VS Code](https://code.visualstudio.com/) and the PowerShell extension from the Extensions Marketplace.
 
-1. **Open Command Prompt as Administrator**:
-   - Run the Sysprep tool to generalize the system:
+#### **Prepare the USB Drive**
+- Ensure you have a USB drive with at least 32 GB of space.
+- Insert the USB drive into your computer.
+
+### **Step 2: Create a Bootable USB with OSDCloud**
+
+#### **Set Up the OSDCloud Workspace**
+1. **Run PowerShell Commands**:
+   - Open PowerShell as an Administrator and run the following commands:
      ```powershell
-     C:\Windows\System32\Sysprep\sysprep.exe /oobe /generalize /shutdown
-     ```
-   - The system will shut down after the process is complete.
-
-## Step 3: Capture the Image
-
-### 3.1: Download and Install Windows ADK and Windows PE Add-on
-
-1. **Download Windows ADK**:
-   - [Download the Windows ADK 10.1.26100.1 (May 2024)](https://go.microsoft.com/fwlink/?linkid=2166081).
-   - Run the installer and select the required components (especially "Deployment Tools").
-
-2. **Download Windows PE Add-on**:
-   - [Download the Windows PE add-on for the Windows ADK 10.1.26100.1 (May 2024)](https://go.microsoft.com/fwlink/?linkid=2166164).
-   - Run the installer to add the Windows PE components to your ADK installation.
-
-### 3.2: Create a Bootable Windows PE ISO
-
-1. **Create Windows PE Media**:
-   - Open the "Deployment and Imaging Tools Environment" as an administrator from the Start menu.
-   - Create a working directory for Windows PE files:
-     ```cmd
-     copype.cmd amd64 C:\WinPE_amd64
+     Set-ExecutionPolicy RemoteSigned -Force
+     Install-Module OSD -Force
+     Import-Module OSD -Force
      ```
 
-2. **Mount the Boot Image**:
-   - Mount the boot image to add custom files:
-     ```cmd
-     dism /Mount-Image /ImageFile:C:\WinPE_amd64\media\sources\boot.wim /index:1 /MountDir:C:\WinPE_amd64\mount
+2. **Create the OSDCloud Workspace**:
+   - Set up the workspace by running:
+     ```powershell
+     New-OSDCloudWorkspace -WorkspacePath C:\OSDCloud
      ```
 
-3. **Add Custom Files (Optional)**:
-   - If you need to add any custom scripts or files, copy them to the mounted image directory:
-     ```cmd
-     xcopy /s C:\Path\To\Your\Files C:\WinPE_amd64\mount\Your\Destination
+3. **Create the Bootable USB Drive**:
+   - Run the following command to create a bootable USB:
+     ```powershell
+     New-OSDCloudUSB -WorkspacePath C:\OSDCloud
      ```
 
-4. **Unmount and Commit the Changes**:
-   - Unmount the image and commit the changes:
-     ```cmd
-     dism /Unmount-Image /MountDir:C:\WinPE_amd64\mount /Commit
+4. **Customize WinPE**:
+   - If you need to customize the WinPE environment further, you can use:
+     ```powershell
+     Edit-OSDCloudwinPE -workspacepath C:\OSDCloud -CloudDriver * -WebPSScript https://gist.githubusercontent.com/Jeffhunter88/ed338a1c3aab4ca6abd2dd68a329d53c/raw/osdcloud_config.ps1 -Verbose
      ```
 
-5. **Create the ISO File**:
-   - Use the `MakeWinPEMedia` command to create an ISO file:
-     ```cmd
-     MakeWinPEMedia /ISO C:\WinPE_amd64 C:\WinPE_amd64\WinPE.iso
+### **Step 3: Prepare the NinjaOne Agent**
+
+1. **Create Folder Structure on WinPE Partition**:
+   - Open the ` OSDCloudUSB (<letterDrive>:)` drive and create the following folder structure:
+     ```plaintext
+     <letterDrive>:\Automate\Provisioning\
+     ```
+   - Copy the NinjaOne agent MSI file into the `Provisioning` folder:
+     ```plaintext
+     <letterDrive>:\Automate\Provisioning\Ninjatechmainoffice6f5c6e-5.9.9652-windows-installer.msi
      ```
 
-### 3.3: Boot the Reference Computer with Windows PE ISO
+### **Step 4: Create the Provisioning Package with WCD**
 
-1. **Boot the Reference Computer**:
-   - Use virtual machine software (like Hyper-V, VMware, or VirtualBox) to boot the ISO, or burn the ISO to a DVD and boot the reference computer from it.
+1. **Launch Windows Configuration Designer**:
+   - Open Windows Configuration Designer from the Start menu.
 
-2. **Capture the Image Using DISM**:
-   - Once booted into Windows PE, you will see a command prompt.
-   - Use the `DISM` tool to capture the Windows image:
-     ```cmd
-     dism /capture-image /imagefile:D:\CustomImage.wim /capturedir:C:\ /name:"Custom Windows Image" /description:"Custom Windows Image with Preinstalled Software"
-     ```
-     - **/imagefile**: The path where the captured image will be saved. Replace `D:\CustomImage.wim` with the desired path (e.g., an external USB drive).
-     - **/capturedir**: The drive you want to capture, usually `C:\`.
-     - **/name**: A name for the image.
-     - **/description**: A description for the image.
+2. **Start a New Project**:
+   - Choose **Provision desktop devices**.
+   - Provide a name and location for the project.
 
-3. **Wait for the Process to Complete**:
-   - The DISM tool will now capture the image of your reference computer and save it to the specified location. This process may take some time depending on the size of the installation.
+3. **Set Up the Device**:
+   - Navigate through the wizard and configure device settings, network settings, and account management as needed.
 
-## Step 4: Create a Custom Windows ISO with the Custom Image
+4. **Add the NinjaOne Agent**:
+   - In the **Add applications** section, add the NinjaOne agent:
+     - Application Name: `NinjaOne Agent`
+     - Installer Path: `<letterDrive>:\Automate\Provisioning\Ninjatechmainoffice6f5c6e-5.9.9652-windows-installer.msi`
+   - Complete the rest of the configuration and save the package.
 
-### 4.1: Download and Mount a Windows ISO
+5. **Export the Provisioning Package**:
+   - Save the provisioning package to the root of the WinPE partition on your USB drive.
 
-1. **Download Windows ISO**:
-   - Download the Windows ISO file from Microsoft's official website.
+### **Step 5: Boot and Deploy**
 
-2. **Mount the ISO**:
-   - Mount the Windows ISO file by double-clicking it or using right-click and selecting "Mount".
+1. **Boot the Target Device**:
+   - Insert the USB drive into the target device and boot from the USB (usually by pressing F12 during startup).
 
-### 4.2: Copy ISO Contents to a Working Directory
+2. **Zero-Touch Provisioning**:
+   - The device will boot into WinPE, automatically load the provisioning package, and install Windows along with the NinjaOne agent.
 
-1. **Create a Working Directory**:
-   - Create a directory to store the ISO contents, for example `C:\WinISO`.
-   - Copy all the contents of the mounted ISO to this directory:
-     ```cmd
-     xcopy D:\* C:\WinISO /E /H
-     ```
-   - Replace `D:` with the drive letter of your mounted ISO.
+3. **Complete the Setup**:
+   - After the installation, Windows will be configured according to the settings in your provisioning package, including the installation of the NinjaOne agent.
 
-### 4.3: Replace the Install.wim File
+### **Summary**
+This process ensures that you have a fully automated and streamlined deployment setup. By integrating OSDCloud and WCD, you can provision devices efficiently, with the NinjaOne agent installed as part of the setup. This approach helps minimize manual intervention and ensures consistency across devices.
 
-1. **Replace Install.wim**:
-   - Replace the `install.wim` file in the `C:\WinISO\sources` folder with your custom WIM file:
-     ```cmd
-     copy /y C:\Path\To\CustomImage.wim C:\WinISO\sources\install.wim
-     ```
-
-## Step 5: Create an Unattended Installation File
-
-1. **Create an Unattended Installation File**:
-   - Create an `unattend.xml` file with the following content and save it in the `C:\WinISO` directory:
-
-## Step 6
-**Create New ISO File**
-1. Download and install the Windows ADK (Assessment and Deployment Kit) if not already installed.
-2. Open the "Deployment and Imaging Tools Environment" as an administrator from the Start menu.
-3. Use the oscdimg tool to create a new ISO file:
-
-```cmd
-oscdimg -u2 -udfver102 -bootdata:2#p0,e,b<path_to_working_directory>\boot\etfsboot.com#pEF,e,b<path_to_working_directory>\efi\Microsoft\boot\efisys.bin -l<Volume_Label> -m <path_to_working_directory> <path_to_output_iso>
-```
-
-### Explanation of Placeholders:
-
-- `<path_to_working_directory>`: The directory containing the customized Windows files (e.g., `C:\WinISO`).
-- `<Volume_Label>`: The volume label for the ISO (e.g., `CustomWindowsISO`).
-- `<path_to_output_iso>`: The output path for the generated ISO file (e.g., `C:\CustomWindows.iso`).
-
-### Example Usage in README:
-
-## Creating a UEFI Bootable ISO
-
-After customizing your Windows installation and creating the necessary files, use the following command to create a UEFI bootable ISO:
-
-```cmd
-oscdimg -u2 -udfver102 -bootdata:2#p0,e,b<path_to_working_directory>\boot\etfsboot.com#pEF,e,b<path_to_working_directory>\efi\Microsoft\boot\efisys.bin -l<Volume_Label> -m <path_to_working_directory> <path_to_output_iso>
-```
-
-### Example Command
-
-```cmd
-oscdimg -u2 -udfver102 -bootdata:2#p0,e,bC:\WinISO\boot\etfsboot.com#pEF,e,bC:\WinISO\efi\Microsoft\boot\efisys.bin -lCustomWindowsISO -m C:\WinISO C:\CustomWindows.iso
-```
-
-This command ensures that the resulting ISO file will be capable of booting in both UEFI and BIOS modes.
+If you follow these steps closely, you should be able to create a bootable USB that provisions Windows and installs the NinjaOne agent on any compatible device. Let me know if you encounter any issues or need further assistance!
