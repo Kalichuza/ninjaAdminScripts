@@ -1,4 +1,16 @@
-**A List of Useful PowerShell Modules** 
+**A List of Useful PowerShell Modules**
+
+
+**Secrets*
+- Secrets Management | https://github.com/powershell/secretmanagement
+```powershell
+Install-Module -Name Microsoft.PowerShell.SecretManagement
+```
+
+- Secrets Vault | 
+```powershell
+Install-Module -Name Microsoft.PowerShell.SecretStore
+```
 
 - A  module to en/decode Base64
 ```powershell
@@ -125,3 +137,4 @@ ADEssentials PowerShell module contains a set of commands that are useful for da
 ```powershell
 Install-Module -Name ADEssentials -AllowClobber -Force
 ```
+
