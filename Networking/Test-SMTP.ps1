@@ -1,3 +1,37 @@
+<#
+.SYNOPSIS
+    Tests an SMTP connection by sending a test email.
+
+.DESCRIPTION
+    This script tests an SMTP connection using the provided server, port, and credentials. 
+    It sends a test email to verify that the SMTP settings are correct and functional.
+
+.PARAMETER smtpServer
+    The SMTP server address. Default is 'smtp-relay.gmail.com'.
+
+.PARAMETER port
+    The port number to use for the SMTP connection. Default is 465.
+
+.PARAMETER username
+    The username or email address used to authenticate with the SMTP server. Default is 'TaxCopier@Saugertiesny.gov'.
+
+.PARAMETER password
+    The password for the SMTP account. This parameter accepts a SecureString.
+
+.PARAMETER useSSL
+    A boolean value indicating whether to use SSL/TLS for the connection. Default is $true.
+
+.EXAMPLE
+    .\Test-SmtpConnection.ps1 -smtpServer "smtp-relay.gmail.com" -port 587 -username "user@example.com"
+
+    Sends a test email using the specified SMTP server, port 587, and the given username.
+
+.NOTES
+    Author: [Your Name]
+    Date: August 16, 2024
+#>
+
+[CmdletBinding()]
 param (
     [string]$smtpServer = "smtp-relay.gmail.com",
     [int]$port = 465,
