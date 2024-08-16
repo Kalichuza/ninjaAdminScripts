@@ -13,34 +13,17 @@ New-OSDCloudTemplate
 # Create OSDCloud workspace
 New-OSDCloudWorkspace -WorkspacePath C:\OSDCloud
 
-# Download VirtIO drivers using the direct download link
-$virtioDriversUrl = "https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/archive-virtio/virtio-win-0.1.262-2/virtio-win.iso"
-$virtioIsoPath = "C:\OSDCloud\virtio-win.iso"
-Invoke-WebRequest -Uri $virtioDriversUrl -OutFile $virtioIsoPath
+# Edit the Windows PE environment and add your custom files
+Edit-OSDCloudWinPE -WorkspacePath C:\OSDCloud -CloudDriver * -AddFile -FilePath "P:\Path\to\unattend.xml" -Destination "X:\unattend.xml" -Verbose
 
-# Mount the VirtIO ISO
-Mount-DiskImage -ImagePath $virtioIsoPath
+# Note: If you have multiple files or folders, you can use -AddFile multiple times or specify a folder structure:
+# Example for a folder:
+Edit-OSDCloudWinPE -WorkspacePath C:\OSDCloud -CloudDriver * -AddFile -FilePath "P:\Path\to\custom\files\*" -Destination "X:\OSDCloud\Automate\Provisioning" -Verbose
 
-# Get the drive letter assigned to the mounted VirtIO ISO
-$virtioDriveLetter = (Get-DiskImage -ImagePath $virtioIsoPath | Get-Volume).DriveLetter
+# Optionally specify the custom deployment script URL
+Edit-OSDCloudWinPE -WorkspacePath C:\OSDCloud -CloudDriver * -WebPSScript "https://raw.githubusercontent.com/Kalichuza/ninjaAdminScripts/main/Windows-ImageDeployment/Dynamic-Deploy-10.ps1" -Verbose
 
-# Correctly format the path to the VirtIO drivers
-$virtioDriversPath = $virtioDriveLetter + ":\"
+# Create the ISO directly using OSDCloud's built-in capabilities
+New-OSDCloudISO -WorkspacePath C:\OSDCloud
 
-# Add VirtIO drivers to the Windows PE environment and specify the custom deployment script URL
-Edit-OSDCloudWinPE -WorkspacePath C:\OSDCloud -CloudDriver * -AddDriverPath $virtioDriversPath -WebPSScript "https://raw.githubusercontent.com/Kalichuza/ninjaAdminScripts/main/Windows-ImageDeployment/Dynamic-Deploy-10.ps1" -Verbose
-
-# Dismount the VirtIO ISO after use
-Dismount-DiskImage -ImagePath $virtioIsoPath
-
-# Copy additional files or add any custom files to the workspace
-# This can include the unattend.xml file or any other custom scripts/configurations
-# Example:
-# Copy-Item -Path "C:\path\to\custom\files\*" -Destination "C:\OSDCloud\Automate\Provisioning" -Recurse
-
-# Now, create the ISO with oscdimg to include any extra space for future modifications
-$sourcePath = "C:\OSDCloud"
-$outputIsoPath = "C:\OSDCloud\CustomWindowsVM.iso"
-oscdimg -m -o -lCustomWinVM -b"$sourcePath\boot\etfsboot.com" $sourcePath $outputIsoPath
-
-Write-Host "ISO creation complete. The ISO is located at $outputIsoPath"
+Write-Host "ISO creation complete. The ISO is located in C:\OSDCloud\ISO"
