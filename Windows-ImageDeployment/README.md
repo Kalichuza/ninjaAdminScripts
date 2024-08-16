@@ -97,9 +97,6 @@ This process ensures that you have a fully automated and streamlined deployment 
 If you follow these steps closely, you should be able to create a bootable USB that provisions Windows and installs the NinjaOne agent on any compatible device. Let me know if you encounter any issues or need further assistance!
 
 
-Certainly! Below is a `README.md` that outlines the process of building and deploying the Proxmox ISO tool using the script provided.
-
-```markdown
 # Proxmox ISO Tool
 
 This tool automates the creation of a custom Windows ISO for deployment in Proxmox virtual machines. It leverages OSDCloud to integrate necessary drivers and scripts into a Windows Preinstallation Environment (WinPE), simplifying the setup of Windows VMs in a Proxmox environment.
