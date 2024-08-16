@@ -37,7 +37,7 @@ New-OSDCloudWorkspace -WorkspacePath C:\OSDCloud
 Edit-OSDCloudWinPE -WorkspacePath C:\OSDCloud -CloudDriver * -AddFile -FilePath "C:\path\to\unattend.xml" -Destination "X:\unattend.xml" -Verbose
 
 # Example: Add all files in a provisioning folder to the WinPE environment
-Edit-OSDCloudWinPE -WorkspacePath C:\OSDCloud -CloudDriver * -AddFile -FilePath "C:\path\to\Provisioning\*" -Destination "X:\Automate\Provisioning" -Verbose
+Edit-OSDCloudWinPE -WorkspacePath C:\OSDCloud -CloudDriver * -AddFile -FilePath "C:\path\to\Provisioning\*" -Destination "X:\OSDCloud\Automate\Provisioning" -Verbose
 
 # Optionally specify the custom deployment script URL
 Edit-OSDCloudWinPE -WorkspacePath C:\OSDCloud -CloudDriver * -WebPSScript "https://your-deployment-script-url.ps1" -Verbose
