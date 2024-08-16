@@ -19,7 +19,7 @@ $virtioIsoPath = "C:\OSDCloud\virtio-win.iso"
 Invoke-WebRequest -Uri $virtioDriversUrl -OutFile $virtioIsoPath
 Mount-DiskImage -ImagePath $virtioIsoPath
 $virtioDriveLetter = (Get-DiskImage -ImagePath $virtioIsoPath | Get-Volume).DriveLetter
-$virtioDriversPath = "${virtioDriveLetter}:\"
+$virtioDriversPath = "${virtioDriveLetter}:\\"
 
 # Create OSDCloud USB
 New-OSDCloudUSB
