@@ -97,3 +97,106 @@ This process ensures that you have a fully automated and streamlined deployment 
 If you follow these steps closely, you should be able to create a bootable USB that provisions Windows and installs the NinjaOne agent on any compatible device. Let me know if you encounter any issues or need further assistance!
 
 
+Certainly! Below is a `README.md` that outlines the process of building and deploying the Proxmox ISO tool using the script provided.
+
+```markdown
+# Proxmox ISO Tool
+
+This tool automates the creation of a custom Windows ISO for deployment in Proxmox virtual machines. It leverages OSDCloud to integrate necessary drivers and scripts into a Windows Preinstallation Environment (WinPE), simplifying the setup of Windows VMs in a Proxmox environment.
+
+## Features
+
+- Automated creation of a custom Windows ISO for Proxmox VMs.
+- Integration of VirtIO drivers for optimized performance.
+- Inclusion of custom provisioning files and `unattend.xml` for automated deployment.
+- Simplified deployment process using Proxmox.
+
+## Prerequisites
+
+- **Windows 10/11 or Windows Server** with administrative privileges.
+- **PowerShell** (version 5.1 or later).
+- **OSD Module** for PowerShell.
+- **VirtIO Drivers** for Proxmox.
+- **Windows Assessment and Deployment Kit (ADK)** (Optional, for advanced customization).
+
+## Installation
+
+1. **Set Execution Policy**:
+   Ensure that PowerShell can execute scripts:
+   ```powershell
+   Set-ExecutionPolicy RemoteSigned -Force
+   ```
+
+2. **Install the OSD Module**:
+   Install the OSD module if it is not already installed:
+   ```powershell
+   Install-Module OSD -Force
+   ```
+
+3. **Download VirtIO Drivers**:
+   Download the VirtIO drivers from the provided link to be used during ISO creation:
+   ```powershell
+   $virtioDriversUrl = "https://fedorapeople.org/groups/virt/virtio-win/direct-downloads/archive-virtio/virtio-win-0.1.262-2/virtio-win.iso"
+   Invoke-WebRequest -Uri $virtioDriversUrl -OutFile "C:\OSDCloud\virtio-win.iso"
+   ```
+
+## Building the ISO
+
+1. **Create OSDCloud Workspace**:
+   Set up the OSDCloud workspace where the build process will take place:
+   ```powershell
+   New-OSDCloudWorkspace -WorkspacePath C:\OSDCloud
+   ```
+
+2. **Integrate VirtIO Drivers and Custom Files**:
+   Use `Edit-OSDCloudWinPE` to integrate VirtIO drivers and custom files into the WinPE environment:
+   ```powershell
+   Edit-OSDCloudWinPE -WorkspacePath C:\OSDCloud -CloudDriver * -AddFile -FilePath "C:\Path\To\Unattend.xml" -Destination "X:\unattend.xml" -Verbose
+   Edit-OSDCloudWinPE -WorkspacePath C:\OSDCloud -CloudDriver * -AddFile -FilePath "C:\Path\To\Provisioning\*" -Destination "X:\OSDCloud\Automate\Provisioning" -Verbose
+   ```
+
+3. **Create the ISO**:
+   Generate the ISO with all the customizations applied:
+   ```powershell
+   New-OSDCloudISO -WorkspacePath C:\OSDCloud
+   ```
+
+   The ISO will be saved in the `C:\OSDCloud\ISO` directory.
+
+## Deployment in Proxmox
+
+1. **Upload the ISO to Proxmox**:
+   - Log in to your Proxmox web interface.
+   - Navigate to the storage where you want to upload the ISO (e.g., `local` or `ISO storage`).
+   - Click on "ISO Images" and upload the generated ISO file.
+
+2. **Create a New VM in Proxmox**:
+   - Start the VM creation process in Proxmox.
+   - Select the uploaded ISO as the installation media.
+   - Ensure that the VM is configured to use VirtIO for the hard disk and network interfaces for optimal performance.
+
+3. **Install Windows**:
+   - Boot the VM from the custom ISO.
+   - The Windows installation will proceed automatically using the `unattend.xml` and provisioning files included in the ISO.
+   - Once the installation is complete, the VM will be ready to use with all the integrated drivers and settings.
+
+## Notes
+
+- **Customization**: You can further customize the `unattend.xml` and provisioning files according to your environment's needs.
+- **Troubleshooting**: Ensure that all paths used in the script are correct and accessible. If you encounter any issues, verify the PowerShell output for detailed error messages.
+
+## License
+
+This project is licensed under the MIT License.
+
+---
+
+This tool simplifies the process of creating a custom Windows installation ISO for use in Proxmox, enabling quick and consistent deployments across your virtual environment.
+```
+
+### Summary:
+- **Overview**: The `README.md` provides a clear explanation of what the tool does, the prerequisites, and step-by-step instructions for building and deploying the ISO in Proxmox.
+- **Installation & Setup**: Detailed steps to install the necessary tools and create the custom ISO.
+- **Deployment**: Instructions for using the ISO in Proxmox, from uploading the ISO to configuring and deploying the VM.
+
+This `README.md` should provide a clear and concise guide for anyone looking to use this tool to deploy Windows VMs in Proxmox.

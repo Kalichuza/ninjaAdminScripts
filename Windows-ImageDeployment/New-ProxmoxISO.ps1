@@ -13,7 +13,7 @@ New-OSDCloudTemplate
 # Create OSDCloud workspace
 New-OSDCloudWorkspace -WorkspacePath C:\OSDCloud
 
-# Edit the Windows PE environment and add your custom files
+# Edit the Windows PE environment and add your custom files. For example, msi files, ppkg files, or unattend.xml files
 Edit-OSDCloudWinPE -WorkspacePath C:\OSDCloud -CloudDriver * -AddFile -FilePath "P:\Path\to\unattend.xml" -Destination "X:\unattend.xml" -Verbose
 
 # Note: If you have multiple files or folders, you can use -AddFile multiple times or specify a folder structure:
