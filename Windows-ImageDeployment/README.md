@@ -1,4 +1,4 @@
-Here’s a complete guide to creating a bootable USB drive using OSDCloud and Windows Configuration Designer (WCD) to install the NinjaOne agent during the Windows provisioning process. This guide includes all the corrected and necessary steps:
+Here’s a complete guide to creating a bootable USB drive using OSDCloud and Windows Configuration Designer (WCD) to install the NinjaOne agent during the Windows provisioning process. This guide is an adaptations of an [artice](https://www.ninjaone.com/blog/zero-touch-device-provisioning/) written by Jeff Hunter at NinjaOne and includes all the necessary steps:
 
 ### **Step 1: Prepare Your Environment**
 
