@@ -27,7 +27,7 @@ $virtioDriveLetter = (Get-DiskImage -ImagePath $virtioIsoPath | Get-Volume).Driv
 # Correctly format the path to the VirtIO drivers
 $virtioDriversPath = $virtioDriveLetter + ":\"
 
-# Add VirtIO drivers to the Windows PE environment
+# Add VirtIO drivers to the Windows PE environment (This ensures network and disk drivers are loaded)
 Edit-OSDCloudWinPE -WorkspacePath C:\OSDCloud -CloudDriver * -AddDriverPath $virtioDriversPath -Verbose
 
 # Dismount the VirtIO ISO after use
@@ -36,14 +36,26 @@ Dismount-DiskImage -ImagePath $virtioIsoPath
 # Edit the Windows PE environment and add your custom files. For example, msi files, ppkg files, or unattend.xml files
 Edit-OSDCloudWinPE -WorkspacePath C:\OSDCloud -CloudDriver * -AddFile -FilePath "P:\Path\to\unattend.xml" -Destination "X:\unattend.xml" -Verbose
 
-# Note: If you have multiple files or folders, you can use -AddFile multiple times or specify a folder structure:
-# Example for a folder:
-Edit-OSDCloudWinPE -WorkspacePath C:\OSDCloud -CloudDriver * -AddFile -FilePath "P:\Path\to\custom\files\*" -Destination "X:\OSDCloud\Automate\Provisioning" -Verbose
-
 # Optionally specify the custom deployment script URL
-Edit-OSDCloudWinPE -WorkspacePath C:\OSDCloud -CloudDriver * -WebPSScript "https://raw.githubusercontent.com/Kalichuza/ninjaAdminScripts/main/Windows-ImageDeployment/Dynamic-Deploy-10.ps1" -Verbose
+Edit-OSDCloudWinPE -WorkspacePath C:\OSDCloud -CloudDriver * -WebPSScript "https://raw.githubusercontent.com/Kalichuza/ninjaAdminScripts/main/Windows-ImageDeployment/Dynamic-Deploy-ProxMox.ps1" -Verbose
 
 # Create the ISO directly using OSDCloud's built-in capabilities
 New-OSDCloudISO -WorkspacePath C:\OSDCloud
 
 Write-Host "ISO creation complete. The ISO is located in C:\OSDCloud\ISO"
+
+# Deploy Windows using OSDCloud with appropriate OS version and edition
+Write-Host -ForegroundColor Green "Starting OSDCloud ZTI"
+Start-Sleep -Seconds 5
+
+# Select the OS version to deploy. Comment out the one you don't need.
+#Start-OSDCloud -OSVersion 'Windows 11' -OSBuild 22H2 -OSEdition Pro -OSLanguage en-us -OSLicense Retail -ZTI
+
+Start-OSDCloud -OSVersion 'Windows 10' -OSBuild 22H2 -OSEdition Pro -OSLanguage en-us -OSLicense Retail -ZTI
+
+# Notify the user about the impending shutdown
+Write-Host -ForegroundColor Green "Shutting down in 20 seconds to allow boot device change!"
+Start-Sleep -Seconds 20
+
+# Shut down instead of rebooting to allow time to switch the boot device
+wpeutil shutdown
