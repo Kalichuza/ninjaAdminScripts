@@ -33,11 +33,14 @@ Edit-OSDCloudWinPE -WorkspacePath C:\OSDCloud -CloudDriver * -AddDriverPath $vir
 # Dismount the VirtIO ISO after use
 Dismount-DiskImage -ImagePath $virtioIsoPath
 
-# Edit the Windows PE environment and add your custom files. For example, msi files, ppkg files, or unattend.xml files
+# Add unattend.xml file or other custom files to the WinPE environment
 Edit-OSDCloudWinPE -WorkspacePath C:\OSDCloud -CloudDriver * -AddFile -FilePath "P:\Path\to\unattend.xml" -Destination "X:\unattend.xml" -Verbose
 
+# Add additional custom files, such as provisioning scripts or other configurations
+Edit-OSDCloudWinPE -WorkspacePath C:\OSDCloud -CloudDriver * -AddFile -FilePath "P:\Path\to\custom\files\*" -Destination "X:\OSDCloud\Automate\Provisioning" -Verbose
+
 # Optionally specify the custom deployment script URL
-Edit-OSDCloudWinPE -WorkspacePath C:\OSDCloud -CloudDriver * -WebPSScript "https://raw.githubusercontent.com/Kalichuza/ninjaAdminScripts/main/Windows-ImageDeployment/Dynamic-Deploy-ProxMox.ps1" -Verbose
+Edit-OSDCloudWinPE -WorkspacePath C:\OSDCloud -CloudDriver * -WebPSScript "https://raw.githubusercontent.com/Kalichuza/ninjaAdminScripts/main/Windows-ImageDeployment/Dynamic-Deploy-10.ps1" -Verbose
 
 # Create the ISO directly using OSDCloud's built-in capabilities
 New-OSDCloudISO -WorkspacePath C:\OSDCloud
