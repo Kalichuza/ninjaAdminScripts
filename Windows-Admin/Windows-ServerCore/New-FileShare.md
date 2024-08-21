@@ -1,5 +1,3 @@
-Let's update the setup instructions for configuring your Server Core setup and creating an SMB share, including setting up permissions using PowerShell.
-
 ### **1. Domain Join the Server Core:**
 
 1. **Rename the Server (Optional):**
