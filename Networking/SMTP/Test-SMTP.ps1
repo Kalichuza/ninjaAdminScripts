@@ -35,7 +35,7 @@
 param (
     [string]$smtpServer = "smtp-relay.gmail.com",
     [int]$port = 465,
-    [string]$username = "TaxCopier@Saugertiesny.gov",
+    [string]$username = "Username",
     [System.Security.SecureString]$password,
     [bool]$useSSL = $true
 )

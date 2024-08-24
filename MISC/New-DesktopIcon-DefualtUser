@@ -1,0 +1,42 @@
+$Url = $env:linkUrl
+$ShortcutName = $env:iconName
+$IconUrl = $env:logoUrl
+
+# Define the explicit paths for the Default user's desktop and Pictures folder
+$defaultUserProfile = "C:\Users\Default"
+$desktopPath = "$defaultUserProfile\Desktop"
+$picturesPath = "$defaultUserProfile\Pictures"
+
+# Ensure the Pictures folder exists
+if (-not (Test-Path -Path $picturesPath)) {
+    New-Item -ItemType Directory -Path $picturesPath
+}
+
+# Ensure the Desktop folder exists
+if (-not (Test-Path -Path $desktopPath)) {
+    New-Item -ItemType Directory -Path $desktopPath
+}
+
+# Define the full path for the shortcut
+$shortcutPath = "$desktopPath\$ShortcutName.url"
+
+# Define the path for the icon in the Pictures folder
+$iconFileName = "$ShortcutName.ico"
+$iconPath = "$picturesPath\$iconFileName"
+
+# Download the icon using Invoke-WebRequest
+Invoke-WebRequest -Uri $IconUrl -OutFile $iconPath
+
+# Create the .url file with the URL and icon information
+$shortcutContent = @"
+[InternetShortcut]
+URL=$Url
+IconFile=$iconPath
+IconIndex=0
+"@
+
+# Create the shortcut on the Default user's Desktop
+Set-Content -Path $shortcutPath -Value $shortcutContent
+
+Write-Output "Shortcut created on the Default user profile's desktop: $shortcutPath"
+Write-Output "Icon saved to: $iconPath"
