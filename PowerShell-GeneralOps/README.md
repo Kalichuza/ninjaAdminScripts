@@ -1,4 +1,4 @@
-# Some Places To Learn And Talk About Powershell #
+## Some Places To Learn And Talk About Powershell ##
 
 - [PowerShell Community Blog](https://devblogs.microsoft.com/powershell-community/)
 - [PowerShell Team Blog](https://devblogs.microsoft.com/powershell/)
