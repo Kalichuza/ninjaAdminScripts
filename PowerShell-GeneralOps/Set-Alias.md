@@ -50,19 +50,60 @@ Remove-Item Alias:ll
 ```
 
 #### 4. **Persisting Aliases Across Sessions**
-By default, aliases created with `Set-Alias` only last for the current session. To make them persistent, you need to add the `Set-Alias` command to your PowerShell profile script.
+To create a persistent alias in PowerShell that is available across all sessions, you can add the alias definition to your PowerShell profile script. Here's how you can do it:
 
-**Steps to Update Your Profile:**
+### Step 1: Open or Create a PowerShell Profile
 
-1. **Locate Your Profile Script**:
-   The profile script is usually located at:
-   - `$PROFILE`
+1. Open a PowerShell session.
+2. Check if you have a profile script by typing:
 
-2. **Edit the Profile**:
-   You can edit it with the following command:
+   ```powershell
+   Test-Path $PROFILE
+   ```
+
+   If it returns `False`, you don't have a profile script yet.
+
+3. To create a new profile script (if it doesn't exist), type:
+
+   ```powershell
+   New-Item -Path $PROFILE -ItemType File -Force
+   ```
+
+4. Open the profile script in a text editor (like Notepad):
+
    ```powershell
    notepad $PROFILE
    ```
+
+### Step 2: Add the Alias to the Profile Script
+
+1. In the text editor, add your alias definition to the profile script. For example, to create an alias `ll` for `Get-ChildItem -Force`, you would add:
+
+   ```powershell
+   Set-Alias ll Get-ChildItem -Force
+   ```
+
+2. Save the file and close the text editor.
+
+### Step 3: Load the Profile
+
+1. To load the profile into the current session, run:
+
+   ```powershell
+   . $PROFILE
+   ```
+
+Now, the alias will be available in all future PowerShell sessions.
+
+### Example Alias
+
+If you want to create an alias `dirf` for `Get-ChildItem -Recurse`, you would add the following line to your profile:
+
+```powershell
+Set-Alias dirf Get-ChildItem -Recurse
+```
+
+This alias will be persistent across all PowerShell sessions because it's defined in your PowerShell profile.
 
 3. **Add Your Alias**:
    Add your alias command inside the profile script. For example:
