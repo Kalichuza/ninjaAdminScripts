@@ -22,6 +22,8 @@ The One, The Only, The Powershell Owl...
 Write-Host $asciiArt
 
 # Custom Aliases for quick navigation
+Set-Alias impmod Import-Module
+Set-Alias instmod Install-Module
 Set-Alias docs Set-Location
 Set-Alias proj Set-Location
 Set-Alias dl Set-Location
