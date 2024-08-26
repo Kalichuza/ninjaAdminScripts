@@ -15,7 +15,7 @@ $asciiArt = @'
 |____|__ (____  /____/__|\___  >___|  /____//_____ \(____  /    --"--"--  
         \/    \/             \/     \/            \/     \/     
   
-The One, The Only, The Powershell Owl... 
+The One, The Only, The PowerShell Owl... 
 
 
 '@
