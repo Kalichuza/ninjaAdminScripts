@@ -95,6 +95,9 @@ function Get-RandomQuote {
         $response = Invoke-RestMethod -Uri $apiUrl -Headers @{ "X-Api-Key" = $apiKey } -Method Get
         $quote = $response[0].quote
         $author = $response[0].author
+
+        Write-Host 'Your Computer Quote: '
+        
         Write-Host "`"$quote`" - $author" -ForegroundColor Magenta
     } catch {
         Write-Host "Failed to retrieve a quote. Please check your connection or API key." -ForegroundColor Red
