@@ -70,7 +70,7 @@ function Install-Modules {
 }
 
 # Example usage:
-$modulesToCheck = @("PSReadLine", "Pester", "Az", "Regex-Filter", "Regex-Finder")
+$modulesToCheck = @("PSReadLine", "Pester", "Regex-Filter", "Regex-Finder")
 Install-Modules -Modules $modulesToCheck
 
 
