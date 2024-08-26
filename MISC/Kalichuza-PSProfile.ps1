@@ -85,13 +85,20 @@ function Edit-Profile {
     notepad $PROFILE
 }
 
-# Display a random motivational quote each time PowerShell starts
+# Function to get a random quote from the API
 function Get-RandomQuote {
-    $quotes = @(
-        "Do or do not, there is no try. - Yoda",
-        "Stay hungry, stay foolish. - Steve Jobs",
-        "The only limit to our realization of tomorrow is our doubts of today. - Franklin D. Roosevelt"
-    )
-    $quote = $quotes | Get-Random
-    Write-Host $quote
+    $apiUrl = "https://api.api-ninjas.com/v1/quotes?category=computers"
+
+    try {
+        $response = Invoke-RestMethod -Uri $apiUrl -Method Get
+        $quote = $response[0].quote
+        $author = $response[0].author
+        Write-Host "`"$quote`" - $author" -ForegroundColor Magenta
+    } catch {
+        Write-Host "Failed to retrieve a quote. Please check your connection." -ForegroundColor Red
+    }
 }
+
+# Example usage of the function
+Get-RandomQuote
+
