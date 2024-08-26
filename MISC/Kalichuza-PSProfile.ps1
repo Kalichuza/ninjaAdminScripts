@@ -90,13 +90,13 @@ function Edit-Profile {
 function Get-RandomQuote {
     $apiUrl = "https://api.api-ninjas.com/v1/quotes?category=computers"
     $apiKey = "zaIgQT5lhoyNyU+FFRZMsw==E0xqn9sqLneoF9Tz"  # Replace with your actual API key
-
+    Write-Host 'Your Computer Quote: ' -ForegroundColor Magenta
     try {
         $response = Invoke-RestMethod -Uri $apiUrl -Headers @{ "X-Api-Key" = $apiKey } -Method Get
         $quote = $response[0].quote
         $author = $response[0].author
 
-        Write-Host 'Your Computer Quote: ' -ForegroundColor Magenta
+        
         
         Write-Host "`"$quote`" - $author" -ForegroundColor Magenta
     } catch {
