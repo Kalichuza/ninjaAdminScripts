@@ -96,7 +96,7 @@ function Get-RandomQuote {
         $quote = $response[0].quote
         $author = $response[0].author
 
-        Write-Host 'Your Computer Quote: '
+        Write-Host 'Your Computer Quote: ' -ForegroundColor Magenta
         
         Write-Host "`"$quote`" - $author" -ForegroundColor Magenta
     } catch {
