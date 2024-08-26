@@ -89,6 +89,8 @@ function Edit-Profile {
 # Function to get a random quote from the API
 function Get-RandomQuote {
     $apiUrl = "https://api.api-ninjas.com/v1/quotes?category=computers"
+    
+    # Dont Worry, this is a free api key, do not care one bit if you steal it lol
     $apiKey = "zaIgQT5lhoyNyU+FFRZMsw==E0xqn9sqLneoF9Tz"  # Replace with your actual API key
     Write-Host 'Your Computer Quote: ' -ForegroundColor Magenta
     try {
