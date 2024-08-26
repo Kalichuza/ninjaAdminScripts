@@ -1,6 +1,6 @@
 # Set the terminal window's background and foreground colors
 
-$Host.UI.RawUI.ForegroundColor = "White"
+#$Host.UI.RawUI.ForegroundColor = "White"
 Clear-Host
 
 # Set the window title
