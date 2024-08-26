@@ -56,6 +56,7 @@ function Install-Modules {
             Install-Module -Name $module -Force -Scope CurrentUser
             if (Get-Module -ListAvailable -Name $module) {
                 Write-Host "$module has been successfully installed." -ForegroundColor Green
+                Import-Module -Name $module -Force 
             } else {
                 Write-Host "Failed to install $module." -ForegroundColor Red
             }
