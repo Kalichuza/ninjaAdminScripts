@@ -32,7 +32,7 @@ Set-Alias docs Set-Location
 Set-Alias proj Set-Location
 Set-Alias dl Set-Location
 Set-Alias np Notepad
-Set-Alias code "C:\Program Files\Microsoft VS Code\Code.exe"
+#Set-Alias code "C:\Program Files\Microsoft VS Code\Code.exe"
 
 # Personalized prompt with Git branch display and a light pastel color
 function prompt {
