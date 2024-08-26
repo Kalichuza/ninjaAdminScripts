@@ -41,6 +41,34 @@ function prompt {
     return " "
 }
 
+# Auto-Install Modules
+function Install-Modules {
+    param (
+        [Parameter(Mandatory=$true)]
+        [string[]]$Modules
+    )
+
+    foreach ($module in $Modules) {
+        if (Get-Module -ListAvailable -Name $module) {
+            Write-Host "$module is already installed." -ForegroundColor Green
+        } else {
+            Write-Host "Installing $module..." -ForegroundColor Yellow
+            Install-Module -Name $module -Force -Scope CurrentUser
+            if (Get-Module -ListAvailable -Name $module) {
+                Write-Host "$module has been successfully installed." -ForegroundColor Green
+            } else {
+                Write-Host "Failed to install $module." -ForegroundColor Red
+            }
+        }
+    }
+}
+
+# Example usage:
+$modulesToCheck = @("PSReadLine", "Pester", "Az", "Regex-Filter", "Regex-Finder")
+Install-Modules -Modules $modulesToCheck
+
+
+
 # Auto-Import frequently used modules
 #Import-Module posh-git
 Import-Module PSReadLine
