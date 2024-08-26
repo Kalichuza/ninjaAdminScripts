@@ -21,6 +21,10 @@ The One, The Only, The Powershell Owl...
 '@
 Write-Host $asciiArt
 
+
+#Set the Execution Policy 
+
+set-executionPolicy -ExecutionPolicy Bypass -Scope CurrentUser
 # Custom Aliases for quick navigation
 Set-Alias impmod Import-Module
 Set-Alias instmod Install-Module
