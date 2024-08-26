@@ -9,7 +9,7 @@ $asciiArt = @"
 |    |  \ / __ \|  |_|  \  \___|   Y  \  |  //    /  / __ \_
 |____|__ (____  /____/__|\___  >___|  /____//_____ \(____  /
         \/    \/             \/     \/            \/     \/ 
-"
+"@
 Write-Host $asciiArt -ForegroundColor Cyan
 
 # Set a pastel-themed color scheme
