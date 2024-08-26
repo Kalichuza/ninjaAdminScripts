@@ -86,16 +86,18 @@ function Edit-Profile {
 }
 
 # Function to get a random quote from the API
+# Function to get a random quote from the API
 function Get-RandomQuote {
     $apiUrl = "https://api.api-ninjas.com/v1/quotes?category=computers"
+    $apiKey = "zaIgQT5lhoyNyU+FFRZMsw==E0xqn9sqLneoF9Tz"  # Replace with your actual API key
 
     try {
-        $response = Invoke-RestMethod -Uri $apiUrl -Method Get
+        $response = Invoke-RestMethod -Uri $apiUrl -Headers @{ "X-Api-Key" = $apiKey } -Method Get
         $quote = $response[0].quote
         $author = $response[0].author
         Write-Host "`"$quote`" - $author" -ForegroundColor Magenta
     } catch {
-        Write-Host "Failed to retrieve a quote. Please check your connection." -ForegroundColor Red
+        Write-Host "Failed to retrieve a quote. Please check your connection or API key." -ForegroundColor Red
     }
 }
 
