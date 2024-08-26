@@ -25,25 +25,15 @@ Write-Host $asciiArt
 #Set the Execution Policy 
 
 set-executionPolicy -ExecutionPolicy Bypass -Scope CurrentUser
+
 # Custom Aliases for quick navigation
 Set-Alias impmod Import-Module
 Set-Alias instmod Install-Module
-Set-Alias docs Set-Location
-Set-Alias proj Set-Location
-Set-Alias dl Set-Location
 Set-Alias np Notepad
+
 #Set-Alias code "C:\Program Files\Microsoft VS Code\Code.exe"
 
-# Personalized prompt with Git branch display and a light pastel color
-function prompt {
-    $gitBranch = ''
-    if (Test-Path .git) {
-        $branch = git rev-parse --abbrev-ref HEAD
-        $gitBranch = " [$branch]"
-    }
-    Write-Host "$($PWD.Path)$gitBranch>" -NoNewline
-    return " "
-}
+
 
 # Auto-Install and Import Modules
 function Install-Modules {
@@ -82,10 +72,10 @@ Import-Module PSReadLine
 
 # Custom function to edit this profile quickly
 function Edit-Profile {
-    notepad $PROFILE
+    code $PROFILE
 }
 
-# Function to get a random quote from the API
+<# Function to get a random quote from the API
 # Function to get a random quote from the API
 function Get-RandomQuote {
     $apiUrl = "https://api.api-ninjas.com/v1/quotes?category=computers"
@@ -108,4 +98,5 @@ function Get-RandomQuote {
 
 # Example usage of the function
 Get-RandomQuote
+#>
 
