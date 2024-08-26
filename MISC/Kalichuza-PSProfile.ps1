@@ -45,7 +45,7 @@ function prompt {
     return " "
 }
 
-# Auto-Install Modules
+# Auto-Install and Import Modules
 function Install-Modules {
     param (
         [Parameter(Mandatory=$true)]
@@ -55,6 +55,7 @@ function Install-Modules {
     foreach ($module in $Modules) {
         if (Get-Module -ListAvailable -Name $module) {
             Write-Host "$module is already installed." -ForegroundColor Green
+            Import-Module -Name $module -Force
         } else {
             Write-Host "Installing $module..." -ForegroundColor Yellow
             Install-Module -Name $module -Force -Scope CurrentUser
@@ -71,6 +72,7 @@ function Install-Modules {
 # Example usage:
 $modulesToCheck = @("PSReadLine", "Pester", "Az", "Regex-Filter", "Regex-Finder")
 Install-Modules -Modules $modulesToCheck
+
 
 
 
