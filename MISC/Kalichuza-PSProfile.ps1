@@ -30,6 +30,9 @@ set-executionPolicy -ExecutionPolicy Bypass -Scope CurrentUser
 Set-Alias impmod Import-Module
 Set-Alias instmod Install-Module
 Set-Alias np Notepad
+Set-Alias gcmd Get-Command
+Set-Alias gmod Get-Module
+Set-Alias ie Invoke-Expression
 
 #Set-Alias code "C:\Program Files\Microsoft VS Code\Code.exe"
 
@@ -99,4 +102,5 @@ function Get-RandomQuote {
 # Example usage of the function
 Get-RandomQuote
 #>
+
 
