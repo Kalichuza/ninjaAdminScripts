@@ -8,16 +8,15 @@ $host.ui.RawUI.WindowTitle = "Kalichuza's PowerShell"
 
 # ASCII Art with pastel colors
 $asciiArt = @'
- ____  __.      .__  .__       .__                          
+ 
+The One, The Only, The PowerShell Owl...
+
+____  __.      .__  .__       .__                          
 |    |/ _|____  |  | |__| ____ |  |__  __ _______________         ,___, 
 |      < \__  \ |  | |  |/ ___\|  |  \|  |  \___   /\__  \        [O.o]
 |    |  \ / __ \|  |_|  \  \___|   Y  \  |  //    /  / __ \_      /)  )
 |____|__ (____  /____/__|\___  >___|  /____//_____ \(____  /    --"--"--  
         \/    \/             \/     \/            \/     \/     
-  
-The One, The Only, The PowerShell Owl... 
-
-
 '@
 Write-Host $asciiArt
 
