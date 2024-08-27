@@ -70,9 +70,14 @@ Below are the in-depth instructions for setting up Jupyter Notebook in Visual St
 
 ### Step 6: Create a New Jupyter Notebook in VS Code
 
+
 1. **Open VS Code**:
    - Open Visual Studio Code.
-
+   - In an admin Powershell portal, type:
+   ```powershell
+   jupyter notebok
+   ```
+   - This will give you several urls. Copy and past one into the existing server in the kernal dropdown menu at the top of the project screen in the search bar.
 2. **Create a New Jupyter Notebook**:
    - Open the Command Palette by pressing `Ctrl+Shift+P`.
    - Type "Jupyter: Create New Blank Notebook" and press Enter.
