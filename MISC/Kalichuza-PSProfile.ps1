@@ -33,6 +33,7 @@ Set-Alias np Notepad
 Set-Alias gcmd Get-Command
 Set-Alias gmod Get-Module
 Set-Alias ie Invoke-Expression
+Set-Alias psd Get-PSDrive
 
 #Set-Alias code "C:\Program Files\Microsoft VS Code\Code.exe"
 
@@ -63,7 +64,7 @@ function Install-Modules {
 }
 
 # Example usage:
-$modulesToCheck = @("PSReadLine", "Pester", "Regex-Filter", "Regex-Finder")
+$modulesToCheck = @("PSReadLine", "Pester", "Regex-Filter", "Regex-Finder","PSPGP")
 Install-Modules -Modules $modulesToCheck
 
 
