@@ -28,13 +28,17 @@ Before you begin, ensure you have the following:
 ## Step 4: Add Custom MSI to the Provisioning Package
 
 1. In the left-hand pane, expand the **Runtime settings** section.
-2. Expand **ProvisioningCommands** and click on **Primary Context** or **FirstLogonCommands** depending on when you want the MSI to be installed.
+2. Expand **ProvisioningCommands** and click on **Primary Context** (or **FirstLogonCommands** depending on when you want the MSI to be installed.)
 3. Click on **Add** to add a new provisioning command.
-4. Set the **CommandLine** to the path of your MSI file. For example:
+4. The top pane will ask you to select your installer file in the file explorer.
+5. Set the **CommandLine** to the MSI installation command for your installer. For example we will use our ninjaOne installer:
     ```plaintext
-    msiexec.exe /i "C:\Path\To\Your\CustomInstaller.msi" /quiet /norestart
+    msiexec.exe /i "NINJA-INSTALLER.msi" 
     ```
-   - Ensure that the path to the MSI file is correct and that the MSI file is accessible on the device where the provisioning package will be applied.
+6. You will set the 'ContinueInstall' setting to True and the 'RestartRequired' False
+7. Repeat this process for each of the MSI files that you want to install. 
+
+   - Ensure that the install command for each MSI file is correct. Usually, some diligent Googling will provide the correct command for silent install. 
 
 ## Step 5: Customize Additional Settings (Optional)
 
