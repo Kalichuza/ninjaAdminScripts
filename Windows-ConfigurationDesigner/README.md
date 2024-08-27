@@ -40,33 +40,12 @@ Before you begin, ensure you have the following:
 
    - Ensure that the install command for each MSI file is correct. Usually, some diligent Googling will provide the correct command for silent install. 
 
-## Step 5: Customize Additional Settings (Optional)
 
-1. You can customize additional settings under **Runtime settings** as needed. This might include configuring Wi-Fi, setting up the device's name, etc.
-2. Once you've made all your desired configurations, proceed to the next step.
-
-## Step 6: Export the Provisioning Package
-
-1. In the top menu, click on **Export** and select **Provisioning package**.
-2. In the "Build the package" screen, configure the following:
-   - **Package Name**: Set a name for the provisioning package.
-   - **Owner**: Set to **IT Admin** if the package is being deployed in an enterprise environment.
-   - **Rank**: Leave it at the default value unless you have specific deployment requirements.
-3. Click **Next**.
-
-## Step 7: Build and Save the Provisioning Package
+## Step 5: Build and Save the Provisioning Package
 
 1. Choose a location to save the `.ppkg` file.
 2. Click **Build** to create the provisioning package.
 3. Once the build is complete, you’ll find the `.ppkg` file in the location you specified.
 
-## Step 8: Apply the Provisioning Package
-
-1. Copy the `.ppkg` file to the target Windows device.
-2. Apply the provisioning package by double-clicking the `.ppkg` file and following the on-screen instructions, or use the `Provisioning Package` tool in Settings -> Accounts -> Access work or school -> Add or remove a provisioning package.
-
-## Conclusion
-
-You have now successfully created and exported a provisioning package with a custom MSI included. This `.ppkg` file can be used to quickly configure multiple devices with the desired settings and software installations.
 
 For more detailed information, refer to the official [Microsoft Documentation](https://docs.microsoft.com/en-us/windows/configuration/provisioning-packages/provisioning-packages-overview).
