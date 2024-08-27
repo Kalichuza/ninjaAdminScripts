@@ -1,51 +1,68 @@
-### Step-by-Step Guide for Windows Configuration Designer
+# Windows Configuration Designer - Adding Custom MSI to a Provisioning Package
 
-#### 1. **Install Windows Configuration Designer**
-1. Download and install the Windows Configuration Designer from the Microsoft Store or as part of the Windows ADK (Assessment and Deployment Kit).
+This guide walks you through the process of using the Windows Configuration Designer (WCD) in advanced mode to add a custom MSI file to a provisioning package and export it as a `.ppkg` file. 
 
-#### 2. **Create a New Provisioning Package**
-1. Open Windows Configuration Designer.
-2. Click on `Provision desktop devices` to create a new provisioning package.
-3. Name your project and choose a location to save it.
+## Prerequisites
 
-#### 3. **Configure Device Settings**
-1. In the left pane, go to `Runtime settings`.
-2. Expand `Common to all Windows editions` and then `Accounts`.
-   - Configure the Administrator account by setting the `Password` and `AutoLogin` settings.
-3. Expand `DeviceName`.
-   - Set `DeviceName` to `car206-%RAND:0000-9999%` to generate a random computer name.
+Before you begin, ensure you have the following:
 
-#### 4. **Add Applications**
-1. In the left pane, go to `Applications`.
-2. Click `Add` and specify the path to the application installer(s) you want to pre-load. You can also add multiple applications here.
+- **Windows Configuration Designer** installed. You can download it from the [Microsoft Store](https://www.microsoft.com/store/productId/9NBLGGH4TX22).
+- The **MSI file** you want to include in the provisioning package.
+- A **Windows 10/11** machine to create the provisioning package.
 
-#### 5. **Configure Additional Settings**
-1. Expand `OOBE` (Out-Of-Box Experience).
-   - Configure the OOBE settings as needed, such as skipping certain setup screens or specifying default user settings.
-2. Expand `Time zone`.
-   - Set the `Time zone` to `Eastern Standard Time`.
+## Step 1: Launch Windows Configuration Designer
 
-#### 6. **Build the Provisioning Package**
-1. Click on `Export` in the toolbar and select `Provisioning package`.
-2. Choose the `Build` button.
-3. Once the package is built, save it to a location of your choice.
+1. Open the **Windows Configuration Designer** application.
+2. In the "Start a new project" screen, select **Advanced provisioning**.
 
-#### 7. **Apply the Provisioning Package**
-1. You can apply the provisioning package during the Windows installation process or to an existing Windows installation.
-   - To apply it during installation, copy the provisioning package to a USB drive and insert it into the PC during the Windows setup.
-   - To apply it to an existing installation, open `Settings` > `Accounts` > `Access work or school` > `Add or remove a provisioning package`, and then add the package from your USB drive or other storage media.
+## Step 2: Create a New Project
 
-### Example of `DeviceName` Configuration
+1. Enter a project name and a project folder location. Choose a location that you can easily access later.
+2. Click **Next** to proceed.
 
-For generating a unique computer name with a specific prefix and a random number, use the following format:
+## Step 3: Configure Device Settings
 
-```plaintext
-NAME-PC%RAND:0000-9999%
-```
+1. On the "Choose what to configure" screen, you can select the settings you want to configure. For this guide, we'll focus on adding an MSI file.
+2. Click **Finish** after selecting the desired settings.
 
-This configuration ensures that each device will be named starting with `car206-` followed by a random number between `0000` and `9999`.
+## Step 4: Add Custom MSI to the Provisioning Package
 
-### Summary
-By following these steps, you can easily create a provisioning package that configures each PC with a unique name like `car206-XXXX` (where `XXXX` is a random number), along with preloaded software and specific configurations. This method allows you to quickly deploy the same configuration across multiple devices with minimal effort.
+1. In the left-hand pane, expand the **Runtime settings** section.
+2. Expand **ProvisioningCommands** and click on **Primary Context** or **FirstLogonCommands** depending on when you want the MSI to be installed.
+3. Click on **Add** to add a new provisioning command.
+4. Set the **CommandLine** to the path of your MSI file. For example:
+    ```plaintext
+    msiexec.exe /i "C:\Path\To\Your\CustomInstaller.msi" /quiet /norestart
+    ```
+   - Ensure that the path to the MSI file is correct and that the MSI file is accessible on the device where the provisioning package will be applied.
 
-If you have more specific requirements or need further customization, please let me know!
+## Step 5: Customize Additional Settings (Optional)
+
+1. You can customize additional settings under **Runtime settings** as needed. This might include configuring Wi-Fi, setting up the device's name, etc.
+2. Once you've made all your desired configurations, proceed to the next step.
+
+## Step 6: Export the Provisioning Package
+
+1. In the top menu, click on **Export** and select **Provisioning package**.
+2. In the "Build the package" screen, configure the following:
+   - **Package Name**: Set a name for the provisioning package.
+   - **Owner**: Set to **IT Admin** if the package is being deployed in an enterprise environment.
+   - **Rank**: Leave it at the default value unless you have specific deployment requirements.
+3. Click **Next**.
+
+## Step 7: Build and Save the Provisioning Package
+
+1. Choose a location to save the `.ppkg` file.
+2. Click **Build** to create the provisioning package.
+3. Once the build is complete, you’ll find the `.ppkg` file in the location you specified.
+
+## Step 8: Apply the Provisioning Package
+
+1. Copy the `.ppkg` file to the target Windows device.
+2. Apply the provisioning package by double-clicking the `.ppkg` file and following the on-screen instructions, or use the `Provisioning Package` tool in Settings -> Accounts -> Access work or school -> Add or remove a provisioning package.
+
+## Conclusion
+
+You have now successfully created and exported a provisioning package with a custom MSI included. This `.ppkg` file can be used to quickly configure multiple devices with the desired settings and software installations.
+
+For more detailed information, refer to the official [Microsoft Documentation](https://docs.microsoft.com/en-us/windows/configuration/provisioning-packages/provisioning-packages-overview).
