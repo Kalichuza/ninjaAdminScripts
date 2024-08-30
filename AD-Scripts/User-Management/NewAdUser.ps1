@@ -49,7 +49,7 @@ param (
     [string]$Title,
 
     [Parameter()]
-    [string]$EmailDomain = "kalichuza.net"
+    [string]$EmailDomain = "yourdomain.com"
 )
 
 # Custom function to generate a password like "ChangeMe<random four-digit number>"
