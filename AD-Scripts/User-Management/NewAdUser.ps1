@@ -20,13 +20,13 @@
     The user's job title. This is an optional parameter.
 
 .PARAMETER EmailDomain
-    The email domain to use when generating the user's email address. Default is "example.com".
+    The email domain to use when generating the user's email address. Default is "kalichuza.net".
 
 .EXAMPLE
     .\Create-ADUser.ps1 -FirstName John -LastName Doe -Title "Systems Engineer" -EmailDomain "company.com"
 
 .NOTES
-    Author: Kalichuza
+    Author: Your Name
     Version: 1.0
     Date: 2024-08-29
     Security: Security-first approach, ensuring all actions are secure and compliant with best practices.
@@ -49,7 +49,7 @@ param (
     [string]$Title,
 
     [Parameter()]
-    [string]$EmailDomain = "yourcompany.com"
+    [string]$EmailDomain = "kalichuza.net"
 )
 
 # Custom function to generate a password like "ChangeMe<random four-digit number>"
@@ -59,8 +59,8 @@ function New-SecurePassword {
 }
 
 try {
-    # Generate the username based on the format provided or default to First Initial + Last Name
-    $username = $UsernameFormat -replace "\$FirstName", $FirstName -replace "\$LastName", $LastName
+    # Generate the username using string formatting instead of replace
+    $username = "{0}{1}" -f $FirstName.Substring(0,1), $LastName
     $i = 2 
 
     # Check for existing usernames and generate a unique one
