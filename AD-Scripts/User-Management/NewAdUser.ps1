@@ -20,8 +20,7 @@
     The user's job title. This is an optional parameter.
 
 .PARAMETER EmailDomain
-    The email domain to use when generating the user's email address. Default is "kalichuza.net".
-
+    The email domain to use when generating the user's email address. Default is "yourdomain.com".
 .EXAMPLE
     .\Create-ADUser.ps1 -FirstName John -LastName Doe -Title "Systems Engineer" -EmailDomain "company.com"
 
