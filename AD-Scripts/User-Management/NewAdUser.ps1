@@ -20,7 +20,8 @@
     The user's job title. This is an optional parameter.
 
 .PARAMETER EmailDomain
-    The email domain to use when generating the user's email address. Default is "yourdomain.com".
+    The email domain to use when generating the user's email address. Default is "kalichuza.net".
+
 .EXAMPLE
     .\Create-ADUser.ps1 -FirstName John -LastName Doe -Title "Systems Engineer" -EmailDomain "company.com"
 
@@ -48,7 +49,7 @@ param (
     [string]$Title,
 
     [Parameter()]
-    [string]$EmailDomain = "yourdomain.com"
+    [string]$EmailDomain = "kalichuza.net"
 )
 
 # Custom function to generate a password like "ChangeMe<random four-digit number>"
@@ -76,12 +77,12 @@ try {
     # Generate email
     $email = "$username@$EmailDomain"
 
-    # Create the user
+    # Create the user and set the EmailAddress explicitly
     $newUserParams = @{
         GivenName              = $FirstName
         Surname                = $LastName
         Name                   = $username
-        UserPrincipalName      = $email
+        EmailAddress           = $email  # Explicitly set the EmailAddress attribute
         ChangePasswordAtLogon  = $true
         AccountPassword        = $secPassword
         Enabled                = $true
