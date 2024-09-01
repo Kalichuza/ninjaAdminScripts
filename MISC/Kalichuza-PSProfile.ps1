@@ -3,10 +3,9 @@ Clear-Host
 # Set the window title
 $host.ui.RawUI.WindowTitle = "Kalichuza's PowerShell"
 
-$asciiArt = @'
- 
-The One, The Only, The PowerShell Owl...
+Write-Host "The One, The Only, The PowerShell Owl...`n" -ForegroundColor DarkMagenta
 
+$asciiArt = @'
  ____  ___      .__  .__       .__                          
 |    |/ _|____  |  | |__| ____ |  |__  __ _______________         ,___, 
 |      < \__  \ |  | |  |/ ___\|  |  \|  |  \___   /\__  \        [O.o]
@@ -15,9 +14,10 @@ The One, The Only, The PowerShell Owl...
         \/    \/             \/     \/            \/     \/ 
     
 '@
-Write-Host $asciiArt
+Write-Host $asciiArt -ForegroundColor DarkRed
 Write-Host "  `n - - - - - - - - - - - - - - - - `n  "
-Get-Date
+$date = Get-Date 
+Write-Host "Today is $date" -ForegroundColor DarkYellow
 Write-Host "  `n - - - - - - - - - - - - - - - - `n  "
 #Set multipe aliases from and hashtable
 $aliases = @{
@@ -41,7 +41,7 @@ $aliases = $aliases | Sort-Object -Property 'Name'
 
 foreach ($alias in $aliases.GetEnumerator()) {
     Set-Alias -Name $alias.Key -Value $alias.Value
-    write-host "$($alias.Value) is now $($alias.Key)"
+    write-host "$($alias.Value) is now $($alias.Key)" -ForegroundColor Cyan
 
 }
 Write-Host "  `n - - - - - - - - - - - - - - - - `n  "
@@ -73,14 +73,14 @@ function Install-Modules {
 
     foreach ($module in $Modules) {
         if (Get-Module -ListAvailable -Name $module) {
-            Write-Host "$module is already installed." -ForegroundColor Green
+            Write-Host "$module is already installed." -ForegroundColor DarkCyan
             Import-Module -Name $module -Force
         }
         else {
             Write-Host "Installing $module..." -ForegroundColor Yellow
             Install-Module -Name $module -Force -Scope CurrentUser
             if (Get-Module -ListAvailable -Name $module) {
-                Write-Host "$module has been successfully installed." -ForegroundColor Green
+                Write-Host "$module has been successfully installed." -ForegroundColor DarkMagenta
                 Import-Module -Name $module -Force 
             }
             else {
