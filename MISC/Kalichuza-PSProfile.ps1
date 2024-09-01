@@ -16,7 +16,8 @@ The One, The Only, The PowerShell Owl...
     
 '@
 Write-Host $asciiArt
-
+Write-Host "  `n - - - - - - - - - - - - - - - - `n  "
+Get-Date
 #Set multipe aliases from and hashtable
 $aliases = @{
     "gmod"    = "Get-Module"
