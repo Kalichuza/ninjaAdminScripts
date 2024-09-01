@@ -14,10 +14,15 @@ $asciiArt = @'
         \/    \/             \/     \/            \/     \/ 
     
 '@
+
 Write-Host $asciiArt -ForegroundColor DarkRed
+
 Write-Host "  `n - - - - - - - - - - - - - - - - `n  "
+
 $date = Get-Date 
+
 Write-Host "Today is $date" -ForegroundColor DarkYellow
+
 Write-Host "  `n - - - - - - - - - - - - - - - - `n  "
 #Set multipe aliases from and hashtable
 $aliases = @{
