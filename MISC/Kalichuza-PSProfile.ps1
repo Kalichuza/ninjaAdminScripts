@@ -28,6 +28,10 @@ $aliases = @{
     "gcmd"    = "Get-Command"
     "rmod"    = "Remove-Module"
     "ga"      = "Get-Alias"
+    "rbf"     = "Remove-Item -Recurse -Force"
+    "scat"    = "Set-Content"
+    "dircpy"  = "Copy-Item -Recurse -Force"
+    "dirmv"   = "Move-Item -Recurse -Force" 
 
 }
 
