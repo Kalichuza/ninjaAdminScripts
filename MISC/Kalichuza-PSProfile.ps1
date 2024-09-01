@@ -3,7 +3,7 @@ Clear-Host
 # Set the window title
 $host.ui.RawUI.WindowTitle = "Kalichuza's PowerShell"
 
-Write-Host "The One, The Only, The PowerShell Owl...`n" -ForegroundColor DarkMagenta
+
 
 $asciiArt = @'
  ____  ___      .__  .__       .__                          
@@ -15,15 +15,7 @@ $asciiArt = @'
     
 '@
 
-Write-Host $asciiArt -ForegroundColor DarkRed
 
-Write-Host "  `n - - - - - - - - - - - - - - - - `n  "
-
-$date = Get-Date 
-
-Write-Host "Today is $date" -ForegroundColor DarkYellow
-
-Write-Host "  `n - - - - - - - - - - - - - - - - `n  "
 #Set multipe aliases from and hashtable
 $aliases = @{
     "gmod"    = "Get-Module"
@@ -97,6 +89,18 @@ function Install-Modules {
 
 $modulesToCheck = @("PSReadLine", "Pester", "Regex-Filter", "Regex-Finder")
 Install-Modules -Modules $modulesToCheck
+
+Write-Host "The One, The Only, The PowerShell Owl...`n" -ForegroundColor Darkred
+
+Write-Host "  `n - - - - - - - - - - - - - - - - `n  "
+
+Write-Host $asciiArt -ForegroundColor DarkRed
+
+Write-Host "  `n - - - - - - - - - - - - - - - - `n  "
+
+$date = Get-Date 
+
+Write-Host "Today is $date" -ForegroundColor DarkYellow
 
 Write-Host "  `n - - - - - - - - - - - - - - - - `n  "
   
