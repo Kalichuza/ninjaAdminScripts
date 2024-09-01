@@ -40,10 +40,16 @@ $aliases = @{
 
 }
 
+$aliases = $aliases | Sort-Object -Property 'Name'
+
 foreach ($alias in $aliases.GetEnumerator()) {
     Set-Alias -Name $alias.Key -Value $alias.Value
+    write-host "$($alias.Value) is now $($alias.Key)"
 
 }
+Write-Host "  "
+Write-Host " - - - - - - - - - - - - - - - -"
+Write-Host "  "
 function HomeBase {
     Set-Location $env:USERPROFILE
     
@@ -95,12 +101,8 @@ function Install-Modules {
 $modulesToCheck = @("PSReadLine", "Pester", "Regex-Filter", "Regex-Finder")
 Install-Modules -Modules $modulesToCheck
 
+Write-Host "  "
 
-
-
-# Auto-Import frequently used modules
-#Import-Module posh-git
-Import-Module PSReadLine
 
 # Custom function to edit this profile quickly
 function Edit-Profile {
