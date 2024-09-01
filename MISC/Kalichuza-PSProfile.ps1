@@ -47,9 +47,8 @@ foreach ($alias in $aliases.GetEnumerator()) {
     write-host "$($alias.Value) is now $($alias.Key)"
 
 }
-Write-Host "  "
-Write-Host " - - - - - - - - - - - - - - - -"
-Write-Host "  "
+Write-Host "  `n - - - - - - - - - - - - - - - - `n  "
+
 function HomeBase {
     Set-Location $env:USERPROFILE
     
@@ -67,11 +66,9 @@ function Open-Downloads {
 function Invoke-Profile {
     . $PROFILE
 }
-#Set-Alias code "C:\Program Files\Microsoft VS Code\Code.exe"
-
-
 
 # Auto-Install and Import Modules
+$modulesToCheck = @("PSReadLine", "Pester", "Regex-Filter", "Regex-Finder")
 function Install-Modules {
     param (
         [Parameter(Mandatory = $true)]
@@ -97,15 +94,11 @@ function Install-Modules {
     }
 }
 
-# Example usage:
-$modulesToCheck = @("PSReadLine", "Pester", "Regex-Filter", "Regex-Finder")
 Install-Modules -Modules $modulesToCheck
-
-Write-Host "  "
-
 
 # Custom function to edit this profile quickly
 function Edit-Profile {
     code $PROFILE
 }
-# Set the terminal window's background and foreground colors  
+Write-Host "  `n - - - - - - - - - - - - - - - - `n  "
+  
