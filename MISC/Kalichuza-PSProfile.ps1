@@ -11,7 +11,7 @@ $asciiArt = @'
  
 The One, The Only, The PowerShell Owl...
 
-____  __.      .__  .__       .__                          
+ ____  ___      .__  .__       .__                          
 |    |/ _|____  |  | |__| ____ |  |__  __ _______________         ,___, 
 |      < \__  \ |  | |  |/ ___\|  |  \|  |  \___   /\__  \        [O.o]
 |    |  \ / __ \|  |_|  \  \___|   Y  \  |  //    /  / __ \_      /)  )
@@ -26,15 +26,41 @@ Write-Host $asciiArt
 
 set-executionPolicy -ExecutionPolicy Bypass -Scope CurrentUser
 
-# Custom Aliases for quick navigation
-Set-Alias impmod Import-Module
-Set-Alias instmod Install-Module
-Set-Alias np Notepad
-Set-Alias gcmd Get-Command
-Set-Alias gmod Get-Module
-Set-Alias ie Invoke-Expression
-Set-Alias psd Get-PSDrive
+#Set multipe aliases from and hashtable
+$aliases = @{
+    "gmod"    = "Get-Module"
+    "ie"      = "Invoke-Expression"
+    "psd"     = "Get-PSDrive"
+    "impmod"  = "Import-Module"
+    "instmod" = "Install-Module"
+    "np"      = "Notepad"
+    "gcmd"    = "Get-Command"
+    "rmod"    = "Remove-Module"
+    "ga"      = "Get-Alias"
 
+}
+
+foreach ($alias in $aliases.GetEnumerator()) {
+    Set-Alias -Name $alias.Key -Value $alias.Value
+
+}
+function HomeBase {
+    Set-Location $env:USERPROFILE
+    
+}
+
+function Open-Desktop {
+    Set-Location "$env:USERPROFILE\Desktop"
+    
+}
+
+function Open-Downloads {
+    Set-Location "$env:USERPROFILE\Downloads"        
+    
+}
+function Invoke-Profile {
+    . $PROFILE
+}
 #Set-Alias code "C:\Program Files\Microsoft VS Code\Code.exe"
 
 
@@ -42,7 +68,7 @@ Set-Alias psd Get-PSDrive
 # Auto-Install and Import Modules
 function Install-Modules {
     param (
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [string[]]$Modules
     )
 
@@ -50,13 +76,15 @@ function Install-Modules {
         if (Get-Module -ListAvailable -Name $module) {
             Write-Host "$module is already installed." -ForegroundColor Green
             Import-Module -Name $module -Force
-        } else {
+        }
+        else {
             Write-Host "Installing $module..." -ForegroundColor Yellow
             Install-Module -Name $module -Force -Scope CurrentUser
             if (Get-Module -ListAvailable -Name $module) {
                 Write-Host "$module has been successfully installed." -ForegroundColor Green
                 Import-Module -Name $module -Force 
-            } else {
+            }
+            else {
                 Write-Host "Failed to install $module." -ForegroundColor Red
             }
         }
@@ -64,7 +92,7 @@ function Install-Modules {
 }
 
 # Example usage:
-$modulesToCheck = @("PSReadLine", "Pester", "Regex-Filter", "Regex-Finder","PSPGP")
+$modulesToCheck = @("PSReadLine", "Pester", "Regex-Filter", "Regex-Finder")
 Install-Modules -Modules $modulesToCheck
 
 
@@ -78,30 +106,4 @@ Import-Module PSReadLine
 function Edit-Profile {
     code $PROFILE
 }
-
-<# Function to get a random quote from the API
-# Function to get a random quote from the API
-function Get-RandomQuote {
-    $apiUrl = "https://api.api-ninjas.com/v1/quotes?category=computers"
-    
-    # Dont Worry, this is a free api key, do not care one bit if you steal it lol
-    $apiKey = "zaIgQT5lhoyNyU+FFRZMsw==E0xqn9sqLneoF9Tz"  # Replace with your actual API key
-    Write-Host 'Your Computer Quote: ' -ForegroundColor Magenta
-    try {
-        $response = Invoke-RestMethod -Uri $apiUrl -Headers @{ "X-Api-Key" = $apiKey } -Method Get
-        $quote = $response[0].quote
-        $author = $response[0].author
-
-        
-        
-        Write-Host "`"$quote`" - $author" -ForegroundColor Magenta
-    } catch {
-        Write-Host "Failed to retrieve a quote. Please check your connection or API key." -ForegroundColor Red
-    }
-}
-
-# Example usage of the function
-Get-RandomQuote
-#>
-
-
+# Set the terminal window's background and foreground colors  
