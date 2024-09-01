@@ -1,12 +1,8 @@
-# Set the terminal window's background and foreground colors
-
-#$Host.UI.RawUI.ForegroundColor = "White"
 Clear-Host
 
 # Set the window title
 $host.ui.RawUI.WindowTitle = "Kalichuza's PowerShell"
 
-# ASCII Art with pastel colors
 $asciiArt = @'
  
 The One, The Only, The PowerShell Owl...
@@ -20,11 +16,6 @@ The One, The Only, The PowerShell Owl...
     
 '@
 Write-Host $asciiArt
-
-
-#Set the Execution Policy 
-
-set-executionPolicy -ExecutionPolicy Bypass -Scope CurrentUser
 
 #Set multipe aliases from and hashtable
 $aliases = @{
@@ -48,17 +39,14 @@ foreach ($alias in $aliases.GetEnumerator()) {
 
 }
 Write-Host "  `n - - - - - - - - - - - - - - - - `n  "
-
 function HomeBase {
     Set-Location $env:USERPROFILE
     
 }
-
 function Open-Desktop {
     Set-Location "$env:USERPROFILE\Desktop"
     
 }
-
 function Open-Downloads {
     Set-Location "$env:USERPROFILE\Downloads"        
     
@@ -66,9 +54,11 @@ function Open-Downloads {
 function Invoke-Profile {
     . $PROFILE
 }
+function Edit-Profile {
+    code $PROFILE
+}
 
 # Auto-Install and Import Modules
-$modulesToCheck = @("PSReadLine", "Pester", "Regex-Filter", "Regex-Finder")
 function Install-Modules {
     param (
         [Parameter(Mandatory = $true)]
@@ -94,11 +84,8 @@ function Install-Modules {
     }
 }
 
+$modulesToCheck = @("PSReadLine", "Pester", "Regex-Filter", "Regex-Finder")
 Install-Modules -Modules $modulesToCheck
 
-# Custom function to edit this profile quickly
-function Edit-Profile {
-    code $PROFILE
-}
 Write-Host "  `n - - - - - - - - - - - - - - - - `n  "
   
