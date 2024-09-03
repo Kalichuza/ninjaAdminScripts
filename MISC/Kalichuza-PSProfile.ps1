@@ -57,6 +57,10 @@ function Invoke-Profile {
 function Edit-Profile {
     code $PROFILE
 }
+function Get-Disks {
+    wmic diskdrive list brief
+
+}
 
 # Auto-Install and Import Modules
 function Install-Modules {
@@ -84,7 +88,7 @@ function Install-Modules {
     }
 }
 
-$modulesToCheck = @("PSReadLine", "Pester", "Regex-Filter", "Regex-Finder")
+$modulesToCheck = @("PSReadLine", "Pester", "Regex-Filter", "Regex-Finder", "PSScriptTools", "PSScriptAnalyzer", "PSPGP")
 Install-Modules -Modules $modulesToCheck
 
 
