@@ -1,5 +1,5 @@
 Clear-Host
-
+Write-Host "  `n - - - - - - - - - - - - - - - - `n  "
 # Set the window title
 $host.ui.RawUI.WindowTitle = "Kalichuza's PowerShell"
 
@@ -57,11 +57,18 @@ function Invoke-Profile {
 function Edit-Profile {
     code $PROFILE
 }
+
 function Get-Disks {
     wmic diskdrive list brief
 
 }
 
+#list Custom Aliases
+function Get-Aliases {
+    $aliases.GetEnumerator() | ForEach-Object {
+        Write-Host "$($_.Key) -> $($_.Value)" -ForegroundColor DarkCyan
+    }
+}
 # Auto-Install and Import Modules
 function Install-Modules {
     param (
@@ -106,3 +113,4 @@ Write-Host "Today is $date" -ForegroundColor DarkYellow
 
 Write-Host "  `n - - - - - - - - - - - - - - - - `n  "
   
+
