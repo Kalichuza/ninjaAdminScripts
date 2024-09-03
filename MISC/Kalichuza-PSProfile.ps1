@@ -95,7 +95,7 @@ function Install-Modules {
     }
 }
 
-$modulesToCheck = @("PSReadLine", "Pester", "Regex-Filter", "Regex-Finder", "PSScriptTools", "PSScriptAnalyzer", "PSPGP")
+$modulesToCheck = @("PSReadLine", "Pester", "Regex-Filter", "Regex-Finder", "PSScriptTools", "PSScriptAnalyzer", "PSPGP", "PSHash")
 Install-Modules -Modules $modulesToCheck
 
 
