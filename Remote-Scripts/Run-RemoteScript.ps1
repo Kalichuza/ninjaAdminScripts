@@ -1,3 +1,16 @@
+<#PSScriptInfo
+
+.VERSION 1.1
+
+.GUID 5cf7f62e-c134-4826-9ab8-08d04eac6f72
+
+.AUTHOR Kevin
+
+.DESCRIPTION
+ Runs a script from a URL in memory
+
+#>
+
 param (
     [Parameter(Mandatory=$true)]
     [string]$ScriptUrl
