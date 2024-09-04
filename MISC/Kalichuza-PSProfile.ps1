@@ -125,7 +125,7 @@ $modulesToCheck = @(
     "7Zip4Powershell",
     "PSWriteHTML",
     "PSWriteColor",
-    "PSWinDocumentation",
+    #"PSWinDocumentation",
     "PSEventViewer",
     "PSWindowsUpdate"
 
