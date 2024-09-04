@@ -1,7 +1,7 @@
 
 <#PSScriptInfo
 
-.VERSION 1.1
+.VERSION 1.2
 
 .GUID fb20ee30-220f-49e9-af0a-fb7c6ae764c7
 
@@ -51,5 +51,4 @@ param (
 )
 
 # Downloads remotely hosted code and saves it as an outfile of choosing
-Invoke-WebRequest -Uri $ScriptUrl -OutFile $OutFile
-
+Invoke-WebRequest -Uri $ScriptUrl -OutFile $OutFile -UseBasicParsing
