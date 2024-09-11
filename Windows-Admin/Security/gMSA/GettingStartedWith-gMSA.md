@@ -48,7 +48,7 @@ New-ADOrganizationalUnit -Name "ScanUsers" -Path "DC=<yourDomain>,DC=local" -Pro
    - If you wanted to set just a single pc:
      
    ```powershell
-   New-ADServiceAccount -Name gMSAScanUser -DNSHostName "mcs.local" -PrincipalsAllowedToRetrieveManagedPassword "mcs\mcssrv1$"
+   New-ADServiceAccount -Name gMSAScanUser -DNSHostName "mcs.local" -PrincipalsAllowedToRetrieveManagedPassword "<yourDomain>\<yourServer>$"
 
    ```
 
