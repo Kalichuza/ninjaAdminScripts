@@ -32,7 +32,12 @@ If this is your first time setting up gMSAs, you need to create the **KDS root k
 ### **3. Create the gMSA**
 
 Once the KDS root key is set up, you can create the gMSA.
+Incase you need to setup a nre OU for the service account:
 
+```powershell
+New-ADOrganizationalUnit -Name "ScanUsers" -Path "DC=<yourDomain>,DC=local"
+
+```
 1. **Open PowerShell as a Domain Administrator**.
 
 2. Use the following command to create the gMSA. Replace `"gMSAPrintUser"` with the desired name for the gMSA, and modify the DNS hostname and security group accordingly:
