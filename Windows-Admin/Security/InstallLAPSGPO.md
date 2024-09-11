@@ -32,6 +32,9 @@ $acl.AddAccessRule($domainComputers)
 
 # Apply the updated ACL to the folder
 Set-Acl -Path $folderPath -AclObject $acl
+
+Get-Acl -Path $folderPath | Format-List
+
 ```
 ---
 
@@ -66,6 +69,7 @@ Set-Acl -Path $folderPath -AclObject $acl
    - When prompted to choose a deployment method, select **Assigned** (not **Published**).
 
    This ensures that the LAPS client is automatically installed on the target computers during startup.
+
 
 ---
 
