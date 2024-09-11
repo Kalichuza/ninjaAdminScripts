@@ -103,8 +103,19 @@ Now, test the setup to ensure everything is working correctly:
    - The gMSA has the necessary permissions on the network share.
    - The MFP’s scan profile is correctly configured with the gMSA.
    - The gMSA is installed and functional on the `SCAN-SERVER01` server.
+5. you can also run the below script to manually test fucntionality:
+   ```powershell
+   $path = "\\Path\To\Net\Share"
+if (Test-Path $path) {
+    Write-Host "Access to network share successful."
+} else {
+    Write-Host "Failed to access network share."
+}
+   ```
 
 ---
+
+
 
 ### **6. Optional: Add More Servers (If Needed)**
 
