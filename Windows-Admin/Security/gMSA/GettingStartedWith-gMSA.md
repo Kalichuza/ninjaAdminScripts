@@ -1,4 +1,4 @@
-You can replace "one-off" accounts like `printuser@mcs.local` with **Group Managed Service Accounts (gMSA)** to enhance security and simplify password management. A **gMSA** provides automatic password management, making it an ideal replacement for manually managed service accounts like `printuser@mcs.local`.
+You can replace "one-off" accounts like `printuser@<yourDomain>.local` with **Group Managed Service Accounts (gMSA)** to enhance security and simplify password management. A **gMSA** provides automatic password management, making it an ideal replacement for manually managed service accounts like `printuser@<yourDomain>.local`.
 
 ### **Steps to Implement Group Managed Service Accounts (gMSA)**
 
@@ -38,12 +38,12 @@ Once the KDS root key is set up, you can create the gMSA.
 2. Use the following command to create the gMSA. Replace `"gMSAPrintUser"` with the desired name for the gMSA, and modify the DNS hostname and security group accordingly:
 
    ```powershell
-   New-ADServiceAccount -Name gMSAPrintUser -DNSHostName "mcs.local" -PrincipalsAllowedToRetrieveManagedPassword "MCS\PrintServerGroup"
+   New-ADServiceAccount -Name gMSAPrintUser -DNSHostName "<yourDomain>.local" -PrincipalsAllowedToRetrieveManagedPassword "<yourDomain>\PrintServerGroup"
    ```
 
    - **`-Name`**: Specifies the name of the gMSA (e.g., `gMSAPrintUser`).
    - **`-DNSHostName`**: The fully qualified domain name (FQDN) of the domain where the account will be used.
-   - **`-PrincipalsAllowedToRetrieveManagedPassword`**: Specifies which computers or security groups are allowed to retrieve the gMSA's password. You can add the group of servers that will use this account (e.g., `MCS\PrintServerGroup`).
+   - **`-PrincipalsAllowedToRetrieveManagedPassword`**: Specifies which computers or security groups are allowed to retrieve the gMSA's password. You can add the group of servers that will use this account (e.g., `<yourDomain>\PrintServerGroup`).
 
 ---
 
@@ -71,10 +71,10 @@ You need to install the gMSA on the machines that will use it. These could be se
 
 ### **5. Configure the Service to Use the gMSA**
 
-Now, you need to configure the service (e.g., printing) to use the newly created gMSA instead of `printuser@mcs.local`.
+Now, you need to configure the service (e.g., printing) to use the newly created gMSA instead of `printuser@<yourDomain>.local`.
 
 1. Open the **Services** console (`services.msc`).
-2. Find the service that is currently using the `printuser@mcs.local` account (e.g., Print Spooler or a custom print service).
+2. Find the service that is currently using the `printuser@<yourDomain>.local` account (e.g., Print Spooler or a custom print service).
 3. Right-click the service and select **Properties**.
 4. In the **Log On** tab, change the logon account to the gMSA by specifying the account as follows:
    
@@ -105,10 +105,10 @@ If you're using the gMSA across multiple hosts (e.g., multiple print servers), e
 
 For example, if you have multiple print servers:
 ```powershell
-New-ADServiceAccount -Name gMSAPrintUser -DNSHostName "mcs.local" -PrincipalsAllowedToRetrieveManagedPassword "MCS\PrintServers"
+New-ADServiceAccount -Name gMSAPrintUser -DNSHostName "<yourDomain>.local" -PrincipalsAllowedToRetrieveManagedPassword "<yourDomain>\PrintServers"
 ```
 
-Where `MCS\PrintServers` is a security group containing the allowed computers.
+Where `<yourDomain>\PrintServers` is a security group containing the allowed computers.
 
 ---
 
@@ -126,6 +126,6 @@ Where `MCS\PrintServers` is a security group containing the allowed computers.
 4. **Configure services** to use the gMSA.
 5. **Verify the service** and the account's functionality.
 
-This approach will replace manually managed accounts like `printuser@mcs.local` with a much more secure and manageable gMSA.
+This approach will replace manually managed accounts like `printuser@<yourDomain>.local` with a much more secure and manageable gMSA.
 
 Let me know if you need further details on any step!
