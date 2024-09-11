@@ -45,6 +45,12 @@ New-ADOrganizationalUnit -Name "ScanUsers" -Path "DC=<yourDomain>,DC=local" -Pro
    ```powershell
    New-ADServiceAccount -Name gMSAPrintUser -DNSHostName "<yourDomain>.local" -PrincipalsAllowedToRetrieveManagedPassword "<yourDomain>\PrintServerGroup"
    ```
+   - If you wanted to set just a single pc:
+     
+   ```powershell
+   New-ADServiceAccount -Name gMSAScanUser -DNSHostName "mcs.local" -PrincipalsAllowedToRetrieveManagedPassword "mcs\mcssrv1$"
+
+   ```
 
    - **`-Name`**: Specifies the name of the gMSA (e.g., `gMSAPrintUser`).
    - **`-DNSHostName`**: The fully qualified domain name (FQDN) of the domain where the account will be used.
