@@ -15,6 +15,24 @@ Here’s a step-by-step guide for deploying LAPS via Group Policy:
 
    Example UNC path: `\\yourserver\LAPS\LAPS.x64.msi`
 
+
+You can configure the permisions for the install path with the following script:
+```powershell
+# Define the path to the folder
+$folderPath = "\\DevOpsFS\DevShare\DevProgamsInstallers\LAPS"
+
+# Get the current ACL
+$acl = Get-Acl -Path $folderPath
+
+# Create a new access rule for Domain Computers with Read and Execute permissions
+$domainComputers = New-Object System.Security.AccessControl.FileSystemAccessRule("Domain Computers", "ReadAndExecute", "ContainerInherit,ObjectInherit", "None", "Allow")
+
+# Add the new rule to the ACL
+$acl.AddAccessRule($domainComputers)
+
+# Apply the updated ACL to the folder
+Set-Acl -Path $folderPath -AclObject $acl
+```
 ---
 
 ### **Step 2: Create a Group Policy Object (GPO)** for Software Deployment
