@@ -19,7 +19,7 @@ Here’s a step-by-step guide for deploying LAPS via Group Policy:
 You can configure the permisions for the install path with the following script:
 ```powershell
 # Define the path to the folder
-$folderPath = "\\DevOpsFS\DevShare\DevProgamsInstallers\LAPS"
+$folderPath = "\\PAth\To\LAPSINSTALLER"
 
 # Get the current ACL
 $acl = Get-Acl -Path $folderPath
