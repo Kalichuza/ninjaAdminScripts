@@ -16,7 +16,10 @@ Moving computer objects to a new Organizational Unit (OU) in Active Directory ty
 ### Steps to Create an Organizational Unit and Move Computers There
 
 Here’s a step-by-step guide for creating an OU, moving computer objects, and applying LAPS:
-
+import the laps module
+```powershell
+Import-Module AdmPwd.PS
+```
 ---
 
 ### **Step 1: Create the Organizational Unit**
