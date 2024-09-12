@@ -62,6 +62,11 @@ This command moves all computers in the **Computers** container to the new **Man
 
 Once the computers are in the new OU, you need to apply the necessary permissions for LAPS:
 
+You might have to check the location of the OU, here's how:
+```powershell
+Get-ADOrganizationalUnit -Filter 'Name -eq "ManagedComputers"' | Select Name, DistinguishedName
+```
+
 ```powershell
 Set-AdmPwdComputerSelfPermission -OrgUnit "OU=ManagedComputers,DC=<YourDomain>,DC=local"
 Set-AdmPwdReadPasswordPermission -OrgUnit "OU=ManagedComputers,DC=<YourDomain>,DC=local" -AllowedPrincipals "Domain Admins"
