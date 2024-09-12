@@ -5,6 +5,20 @@ To import `.admx` templates for PowerShell Core into Group Policy, follow these 
 2. Look for the `PolicyFile` folder under the desired release version.
 3. Download the `.admx` and `.adml` files for PowerShell Core.
 
+```powershell
+Install-Script -Name Get-RemoteFile -Force
+
+$url1 = "https://github.com/PowerShell/PowerShell/raw/master/assets/GroupPolicy/PowerShellCoreExecutionPolicy.admx"
+$url2 = "https://github.com/PowerShell/PowerShell/raw/master/assets/GroupPolicy/PowerShellCoreExecutionPolicy.adml"
+
+Get-RemoteFile.ps1 -Url $url1 -FilePath "$($env:USERPROFILE)\Desktop\PowerShellCoreExecutionPolicy.admx"
+Start-Sleep -Seconds 10
+Get-RemoteFile.ps1 -Url $url2 -FilePath "$($env:USERPROFILE)\Desktop\PowerShellCoreExecutionPolicy.adml"
+Test-Path -Path "$($env:USERPROFILE)\Desktop\PowerShellCoreExecutionPolicy.admx"
+Test-Path -Path "$($env:USERPROFILE)\Desktop\PowerShellCoreExecutionPolicy.adml"
+
+```
+
 ### Step 2: Copy the ADMX and ADML Files
 #### Option 1: Import to Local Group Policy (Single Machine)
 1. Copy the `.admx` file(s) to the following location:
