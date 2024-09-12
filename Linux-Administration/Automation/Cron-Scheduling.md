@@ -11,7 +11,8 @@ sudo crontab -e
 In the crontab file, add the following line to schedule daily updates at 9 PM:
 
 ```bash
-0 21 * * * apt-get update && apt-get upgrade -y
+0 21 * * * /usr/bin/apt-get update && /usr/bin/apt-get upgrade -y
+
 ```
 
 Here’s what each part of the cron expression means:
