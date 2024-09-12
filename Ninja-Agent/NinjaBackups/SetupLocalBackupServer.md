@@ -1,30 +1,38 @@
-To set up an SMB network share on Ubuntu 22.04 for NinjaRMM backups in a Windows Active Directory (AD) environment, follow these steps:
+Here’s how to set up the SMB network share on your Ubuntu 22.04 server without domain integration, using a single user profile for NinjaRMM backups.
 
 ### Step 1: Install Samba
-Samba is the service that allows Ubuntu to act as an SMB server.
+First, install Samba to allow the Ubuntu server to act as an SMB server:
 ```bash
 sudo apt update
 sudo apt install samba -y
 ```
 
-### Step 2: Configure Samba
-1. Create a directory that will be shared via SMB. For example:
+### Step 2: Create a User for the Service
+1. Create a dedicated user account for managing the backups. For example, we will use `ninjabackupuser`:
+   ```bash
+   sudo adduser ninjabackupuser
+   ```
+
+2. Set a password for the user (this will be used to access the SMB share):
+   ```bash
+   sudo smbpasswd -a ninjabackupuser
+   ```
+
+### Step 3: Create the Backup Directory
+1. Create the directory that will be shared:
    ```bash
    sudo mkdir -p /srv/samba/ninja-backups
+   sudo chown ninjabackupuser:ninjabackupuser /srv/samba/ninja-backups
    sudo chmod 2770 /srv/samba/ninja-backups
    ```
 
-2. Set ownership of the shared directory. Assuming you will create an AD user later:
-   ```bash
-   sudo chown root:users /srv/samba/ninja-backups
-   ```
-
-3. Open the Samba configuration file for editing:
+### Step 4: Configure Samba
+1. Open the Samba configuration file for editing:
    ```bash
    sudo nano /etc/samba/smb.conf
    ```
 
-4. Add the following at the end of the file to define your share:
+2. Add the following at the end of the file to define the backup share:
    ```ini
    [NinjaBackups]
    path = /srv/samba/ninja-backups
@@ -32,67 +40,33 @@ sudo apt install samba -y
    writable = yes
    create mask = 0770
    directory mask = 0770
-   valid users = @users
+   valid users = ninjabackupuser
    ```
 
-### Step 3: Join the Server to Active Directory
-1. Install necessary packages for AD integration:
-   ```bash
-   sudo apt install realmd sssd adcli krb5-user samba-common-bin -y
-   ```
+3. Save the file and exit the editor.
 
-2. Discover your AD domain:
-   ```bash
-   sudo realm discover yourdomain.local
-   ```
-
-3. Join the domain:
-   ```bash
-   sudo realm join --user=administrator yourdomain.local
-   ```
-
-4. Check if the server is joined:
-   ```bash
-   realm list
-   ```
-
-5. Enable AD users to access the SMB share. Edit `/etc/samba/smb.conf` again and add:
-   ```ini
-   security = ads
-   realm = YOURDOMAIN.LOCAL
-   workgroup = YOURDOMAIN
-   ```
-   Make sure to configure the correct workgroup and realm.
-
-### Step 4: Restart Samba and Enable Services
+### Step 5: Restart Samba Services
+Restart the Samba services to apply the changes:
 ```bash
 sudo systemctl restart smbd nmbd
-sudo systemctl enable smbd nmbd
 ```
 
-### Step 5: Set Permissions for AD Users
-You can assign permissions to the AD users or groups on the shared directory:
-```bash
-sudo chown :YOURDOMAIN\domain_users /srv/samba/ninja-backups
-sudo chmod 2770 /srv/samba/ninja-backups
-```
-
-### Step 6: Allow Samba Through the Firewall
-If the firewall is enabled, allow SMB traffic:
+### Step 6: Set Firewall Rules (Optional)
+If your firewall is enabled, allow SMB traffic:
 ```bash
 sudo ufw allow samba
 sudo ufw reload
 ```
 
-### Step 7: Testing the SMB Share
-From a Windows machine:
+### Step 7: Access the SMB Share from Windows
+On a Windows machine:
 1. Open File Explorer and enter the Ubuntu server’s IP address:
    ```
    \\<Ubuntu_Server_IP>\NinjaBackups
    ```
 
-2. Use your AD credentials to authenticate.
+2. When prompted, enter the credentials of the `ninjabackupuser` created earlier.
 
-After these steps, your Ubuntu 22.04 server will be ready to accept backups via SMB in the NinjaRMM environment.
+After these steps, your Ubuntu server will be ready to accept backups from NinjaRMM via SMB.
 
-Let me know if you need any adjustments or specific configurations!
+Let me know if you need any adjustments!
