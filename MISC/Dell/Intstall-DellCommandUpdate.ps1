@@ -1,3 +1,43 @@
+
+<#PSScriptInfo
+
+.VERSION 1.0.0
+
+.GUID b1747694-2895-4f74-b2df-b169e1f4f850
+
+.AUTHOR Kalichuza
+
+.COMPANYNAME
+
+.COPYRIGHT
+
+.TAGS
+
+.LICENSEURI
+
+.PROJECTURI
+
+.ICONURI
+
+.EXTERNALMODULEDEPENDENCIES 
+
+.REQUIREDSCRIPTS
+
+.EXTERNALSCRIPTDEPENDENCIES
+
+.RELEASENOTES
+
+
+.PRIVATEDATA
+
+#>
+
+<# 
+
+.DESCRIPTION 
+ Installs Dell Command Update On Dell Machines Running Windows 
+
+#> 
 [CmdletBinding()]
 param (
     [Parameter(Mandatory = $false)]
@@ -63,3 +103,6 @@ Write-Output "Expected installer file path: $installerFullPath"
 
 # Verify the installer was downloaded and install
 Install-DellCommandUpdate -installerPath $installerFullPath -logPath $logFilePath
+
+
+

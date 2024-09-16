@@ -1,3 +1,43 @@
+
+<#PSScriptInfo
+
+.VERSION 1.0.0
+
+.GUID ede8ce31-15f6-4165-8bed-cf5dba158ba9
+
+.AUTHOR Kalichuza
+
+.COMPANYNAME
+
+.COPYRIGHT
+
+.TAGS software
+
+.LICENSEURI
+
+.PROJECTURI
+
+.ICONURI
+
+.EXTERNALMODULEDEPENDENCIES 
+
+.REQUIREDSCRIPTS
+
+.EXTERNALSCRIPTDEPENDENCIES
+
+.RELEASENOTES
+
+
+.PRIVATEDATA
+
+#>
+
+<# 
+
+.DESCRIPTION 
+ Gets the installed software on a Windows machine. 
+
+#> 
 [CmdletBinding()]
 param (
     [switch]$ExportToCSV,
