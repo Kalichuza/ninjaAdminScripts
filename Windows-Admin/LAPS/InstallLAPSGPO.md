@@ -38,7 +38,125 @@ Get-Acl -Path $folderPath | Format-List
 ```
 ---
 
-### **Step 2: Create a Group Policy Object (GPO)** for Software Deployment
+Certainly! Here are the updated instructions for setting up permissions on a new LAPS installation, including the correction regarding the correct use of cmdlets from the `AdmPwd.PS` module.
+
+### **Step 2: Steps to Set Up LAPS Permissions**
+
+#### Step 1: Install the LAPS Components
+1. **Download and Install LAPS:**
+   - Download the LAPS installer from the [Microsoft Download Center](https://www.microsoft.com/en-us/download/details.aspx?id=46899).
+   - Install the LAPS tools (ensure both management tools and Group Policy files are selected during installation).
+
+2. **Extend the Active Directory Schema:**
+   - To extend the Active Directory schema with the necessary attributes for LAPS, run the following command from a Domain Controller or a machine with the Active Directory module installed:
+     ```powershell
+     Import-Module AdmPwd.PS
+     Update-AdmPwdADSchema
+     ```
+   - This will add the necessary attributes (`ms-Mcs-AdmPwd` and `ms-Mcs-AdmPwdExpirationTime`) to the AD schema.
+
+#### Step 2: Configure Permissions for LAPS
+
+1. **Set Self-Permission for Computers to Update Their Own Passwords:**
+   - LAPS requires each computer to have the ability to update its own `ms-Mcs-AdmPwd` and `ms-Mcs-AdmPwdExpirationTime` attributes. To set this permission for all computers in a specific Organizational Unit (OU):
+     ```powershell
+     Set-AdmPwdComputerSelfPermission -OrgUnit "OU=ManagedComputers,DC=domain,DC=local"
+     ```
+   - Replace `"OU=ManagedComputers,DC=domain,DC=local"` with the appropriate distinguished name (DN) of your target OU.
+
+2. **Grant Read Permission to IT Admins for Password Retrieval:**
+   - You need to give specific users or groups permission to read the `ms-Mcs-AdmPwd` attribute (the password) for computers in the target OU. This can be done using the `Set-AdmPwdReadPasswordPermission` cmdlet. For example, to give the "Domain Admins" group permission to read local administrator passwords:
+     ```powershell
+     Set-AdmPwdReadPasswordPermission -OrgUnit "OU=ManagedComputers,DC=domain,DC=local" -AllowedPrincipals "Domain Admins"
+     ```
+   - Replace `"Domain Admins"` with other security groups or users as needed.
+
+3. **Grant Reset Permission for Local Administrator Passwords:**
+   - Grant specific users or groups permission to reset the local administrator password if necessary. Use the `Set-AdmPwdResetPasswordPermission` cmdlet:
+     ```powershell
+     Set-AdmPwdResetPasswordPermission -OrgUnit "OU=ManagedComputers,DC=domain,DC=local" -AllowedPrincipals "Domain Admins"
+     ```
+   - This ensures that only authorized personnel can manually reset the local administrator password on target machines.
+
+#### Step 3: Deploy and Configure LAPS Group Policy
+
+1. **Create or Modify the Group Policy Object (GPO):**
+   - Open **Group Policy Management** from a machine that has the LAPS management tools installed.
+   - Either create a new GPO or modify an existing one that is linked to the OU where your computers reside.
+   - Navigate to:  
+     `Computer Configuration -> Policies -> Administrative Templates -> LAPS`.
+   - Configure the following settings:
+     - **Enable local admin password management**: Enable this setting to allow LAPS to manage the local administrator password.
+     - **Do not allow password expiration time longer than required by policy**: This setting ensures that the password expiration complies with your organization's security policy.
+     - **Name of administrator account to manage**: Optionally specify the name of the local administrator account if it differs from the default "Administrator."
+
+2. **Link the GPO to the Appropriate OU:**
+   - Ensure that the GPO is linked to the Organizational Unit (OU) containing the computers that you want LAPS to manage.
+
+#### Step 4: Verify Permissions and Test LAPS
+
+1. **Verify LAPS Permissions:**
+   - To verify that the correct permissions have been applied, use the `Find-AdmPwdExtendedRights` cmdlet:
+     ```powershell
+     Find-AdmPwdExtendedRights -Identity "OU=ManagedComputers,DC=domain,DC=local"
+     ```
+   - This will display a list of users or groups that have been granted permission to read or reset local administrator passwords for computers in the OU.
+
+2. **Test Password Retrieval:**
+   - On a machine that has permission to read the password (e.g., a member of the "Domain Admins" group), run the following command to retrieve the local administrator password for a specific computer:
+     ```powershell
+     Get-AdmPwdPassword -ComputerName "ComputerName"
+     ```
+   - This will return the local administrator password and the password expiration time.
+
+#### Step 5: Monitor and Maintain LAPS
+
+1. **Regularly Review Permissions:**
+   - Periodically check the extended rights using the `Find-AdmPwdExtendedRights` cmdlet to ensure that only authorized groups or users have access to the local administrator passwords.
+
+2. **Rotate Administrator Passwords:**
+   - If needed, you can manually reset the password for a specific machine using the `Reset-AdmPwdPassword` cmdlet:
+     ```powershell
+     Reset-AdmPwdPassword -ComputerName "ComputerName"
+     ```
+
+### Summary of Commands
+
+- Extend the AD schema:
+  ```powershell
+  Update-AdmPwdADSchema
+  ```
+
+- Set self-permission for computers:
+  ```powershell
+  Set-AdmPwdComputerSelfPermission -OrgUnit "OU=ManagedComputers,DC=domain,DC=local"
+  ```
+
+- Grant read permissions:
+  ```powershell
+  Set-AdmPwdReadPasswordPermission -OrgUnit "OU=ManagedComputers,DC=domain,DC=local" -AllowedPrincipals "Domain Admins"
+  ```
+
+- Grant reset permissions:
+  ```powershell
+  Set-AdmPwdResetPasswordPermission -OrgUnit "OU=ManagedComputers,DC=domain,DC=local" -AllowedPrincipals "Domain Admins"
+  ```
+
+- Verify extended rights:
+  ```powershell
+  Find-AdmPwdExtendedRights -Identity "OU=ManagedComputers,DC=domain,DC=local"
+  ```
+
+- Retrieve a computer’s password:
+  ```powershell
+  Get-AdmPwdPassword -ComputerName "ComputerName"
+  ```
+
+By following these steps, you will successfully set up permissions for LAPS in your environment, ensuring that passwords are securely stored and only accessible by authorized users.
+
+
+
+### **Step 3: Create a Group Policy Object (GPO)** for Software Deployment
 
 1. **Open Group Policy Management Console (GPMC)**:
    - On a domain controller or management workstation, open **Group Policy Management**.
@@ -52,7 +170,7 @@ Get-Acl -Path $folderPath | Format-List
 
 ---
 
-### **Step 3: Configure the GPO for Software Installation**
+### **Step 4: Configure the GPO for Software Installation**
 
 1. In the **Group Policy Management Editor**, navigate to:
    ```
@@ -73,7 +191,7 @@ Get-Acl -Path $folderPath | Format-List
 
 ---
 
-### **Step 4: Link the GPO to the Correct OU**
+### **Step 5: Link the GPO to the Correct OU**
 
 1. **Link the GPO** to the **Organizational Unit (OU)** that contains the computers where LAPS should be installed.
 
@@ -81,7 +199,7 @@ Get-Acl -Path $folderPath | Format-List
 
 ---
 
-### **Step 5: Force Group Policy Update and Verify Installation**
+### **Step 6: Force Group Policy Update and Verify Installation**
 
 1. On the target computers, you can force a Group Policy update by running:
 
@@ -94,7 +212,7 @@ Get-Acl -Path $folderPath | Format-List
 
 ---
 
-### **Step 6: Verify LAPS Installation**
+### **Step 7: Verify LAPS Installation**
 
 After rebooting, verify that the LAPS client was installed successfully on the target computers.
 
@@ -112,7 +230,7 @@ After rebooting, verify that the LAPS client was installed successfully on the t
 
 ---
 
-### **Step 7: Apply LAPS Configuration through Group Policy**
+### **Step 8: Apply LAPS Configuration through Group Policy**
 
 Once LAPS is installed on the computers, you need to ensure that the **LAPS Group Policy settings** are applied. This is done by creating another GPO to configure LAPS:
 
