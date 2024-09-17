@@ -1,34 +1,10 @@
-
 <#PSScriptInfo
 
-.VERSION 1.0.0
+.VERSION 1.0.2
 
 .GUID bc3eea3c-c0a7-4914-be96-5d805806109d
 
 .AUTHOR Kalichuza
-
-.COMPANYNAME
-
-.COPYRIGHT
-
-.TAGS
-
-.LICENSEURI
-
-.PROJECTURI
-
-.ICONURI
-
-.EXTERNALMODULEDEPENDENCIES 
-
-.REQUIREDSCRIPTS
-
-.EXTERNALSCRIPTDEPENDENCIES
-
-.RELEASENOTES
-
-
-.PRIVATEDATA
 
 #>
 
@@ -41,10 +17,7 @@
 
 <#
 .SYNOPSIS
-Copies the contents of a folder from a source location to a destination using Robocopy.
-
-.DESCRIPTION
-This script uses Robocopy to mirror a folder from a source path to a destination path, ensuring all contents, including subdirectories and files, are copied. Robocopy is a powerful command-line utility that provides numerous options for file copying, mirroring, and synchronization, making it a reliable tool for this purpose. The script supports the use of multithreading (`/MT:8`), and displays detailed progress information while copying. It can also handle directory creation if the destination does not exist.
+Copies the contents of a user profile folder from a source location to a destination using Robocopy.
 
 .PARAMETER source
 The full path to the source directory that needs to be copied. This parameter is required.
@@ -53,43 +26,34 @@ The full path to the source directory that needs to be copied. This parameter is
 The full path to the destination directory where the source files and directories will be copied. This parameter is required. If the destination does not exist, the script will create it.
 
 .PARAMETER username
-The username that may be required for accessing network shares or secure locations. This parameter is required but currently not used in the Robocopy command directly. (Placeholder for future use.)
+The username that may be required for accessing network shares or secure locations. This parameter is optional.
 
 .PARAMETER password
-The password associated with the username, if required for access to the source or destination. This parameter is required but currently not used in the Robocopy command directly. (Placeholder for future use.)
+A secure password associated with the username. If the username is provided, the script will prompt for the password securely.
 
 .EXAMPLE
-.\copyFolder.ps1 -source "C:\Data\Projects" -destination "D:\Backup\Projects" -username "myUser" -password "myPassword"
+.\Copy-UserProfileAll.ps1 -source "C:\Users\Profile" -destination "D:\Backup\Profile" -username "myUser"
 
-This command copies the contents of `C:\Data\Projects` to `D:\Backup\Projects`. The username and password parameters are placeholders in this version and are not used directly.
-
-.NOTES
-- This script checks for the existence of both the source and destination directories.
-- If the source directory does not exist, the script will exit with an error.
-- If the destination directory does not exist, the script will create it before copying the files.
-- Robocopy will mirror the directory structure and files from the source to the destination.
-- The Robocopy exit code is checked to determine the success of the operation, with exit codes `0-7` indicating success.
-
-.ROBUSTNESS
-- The script is designed to handle both local and network file systems, but username/password functionality is not currently implemented for network shares.
-
-.HELP
-For more information on Robocopy exit codes, refer to:
-https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/robocopy
+This command copies the entire contents of `C:\Users\Profile` to `D:\Backup\Profile`. It will prompt for the password if the username is provided.
 #>
-
 
 param (
     [string]$source,
     [string]$destination,
-    [string]$username,
-    [string]$password
+    [string]$username
 )
 
-# Ensure the source, destination, username, and password are provided
-if (-not $source -or -not $destination -or -not $username -or -not $password) {
-    Write-Host "Usage: .\copyFolder.ps1 -source <source> -destination <destination> -username <username> -password <password>"
+# Ensure the source and destination are provided
+if (-not $source -or -not $destination) {
+    Write-Host "Usage: .\Copy-UserProfileAll.ps1 -source <source> -destination <destination> [-username <username>]"
     exit 1
+}
+
+# Prompt for password if username is provided
+$credential = $null
+if ($username) {
+    $password = Read-Host -AsSecureString "Enter password for $username"
+    $credential = New-Object System.Management.Automation.PSCredential($username, $password)
 }
 
 # Define the full paths for the source and destination
@@ -118,6 +82,3 @@ if ($robocopyExitCode -le 7) {
 } else {
     Write-Host "Error copying source. Robocopy exit code: $robocopyExitCode"
 }
-
-
-
