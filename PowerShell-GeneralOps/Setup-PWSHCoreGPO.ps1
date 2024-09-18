@@ -1,6 +1,6 @@
 <#PSScriptInfo
 
-.VERSION 1.0.2
+.VERSION 1.0.3
 
 .GUID 89078aac-a617-4b05-b6f0-f8d95ffc4ee9
 
@@ -23,6 +23,7 @@ param (
     [string]$admlUrl = "https://github.com/PowerShell/PowerShell/raw/master/assets/GroupPolicy/PowerShellCoreExecutionPolicy.adml"
 )
 
+Install-Script -name Get-RemoteFile -Force
 function Download-File {
     param (
         [Parameter(Mandatory=$true)]
@@ -34,7 +35,7 @@ function Download-File {
 
     try {
         Write-Host "Downloading $url to $destinationPath..."
-        Invoke-WebRequest -Uri $url -OutFile $destinationPath
+        Get-RemoteFile.ps1 -Url $url -FilePath $destinationPath
         Write-Host "Downloaded successfully!"
     } catch {
         Write-Error "Failed to download $($url): $_"
