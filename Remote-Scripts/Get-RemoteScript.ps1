@@ -1,7 +1,7 @@
 
 <#PSScriptInfo
 
-.VERSION 1.2
+.VERSION 1.3
 
 .GUID fb20ee30-220f-49e9-af0a-fb7c6ae764c7
 
@@ -37,7 +37,7 @@
 <# 
 
 .DESCRIPTION 
-Runs a script from a URL in memory
+Downloads a script from a remotely hosted source like Github or pastebin. Really, anywhere that you can host raw text code.
 
 #> 
 
