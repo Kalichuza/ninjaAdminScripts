@@ -1,7 +1,7 @@
 
 <#PSScriptInfo
 
-.VERSION 1.1
+.VERSION 1.3
 
 .GUID c535164d-b299-47f0-9c30-3c3136d8ac40
 
@@ -38,13 +38,15 @@
 
 function Load-CustomScripts {
     # Define the list of scripts to check and install
-    $scripts = @("Find-LocalUsers", 
+    $scripts = @(
+        "Find-LocalUsers", 
         "Get-ComputerOU", 
         "Move-ADObjects", 
         "Set-PwshFolderPermissions",
         "Find-ExposedPasswords",
         "Set-LapsFolderPM",
-        "Setup-PWSHCoreGPO.ps1"
+        "Setup-PWSHCoreGPO",
+        "Set-LapsPermissionsSetup"
 
     )
  

@@ -1,83 +1,34 @@
-Here’s how you can deploy the `CustomSD` value via Group Policy using Registry Preferences:
+To restrict access to PowerShell event logs such that only domain or local administrators can view them, you can configure these settings through Group Policy using the Security Descriptor Definition Language (SDDL). Here’s how you can do it:
 
-### 1. **Open Group Policy Management Console**
+### Steps to Restrict Access via Group Policy:
 
-1. Open **Group Policy Management Console** (`gpmc.msc`) on your domain controller or a machine with the appropriate administrative tools.
+1. **Open the Group Policy Management Console (GPMC)**:
+   - Run `gpmc.msc` to open the console.
 
-2. Create a new Group Policy Object (GPO) or edit an existing one:
-   - Right-click your domain or the Organizational Unit (OU) where you want to apply the policy and select **Create a GPO in this domain, and Link it here** or **Edit** an existing GPO.
+2. **Create or Edit a GPO**:
+   - Create a new GPO or edit an existing one that targets the computers where you want to restrict access.
 
-### 2. **Navigate to Registry Preferences**
+3. **Navigate to Event Log Settings**:
+   - Go to `Computer Configuration` > `Policies` > `Administrative Templates` > `Windows Components` > `Event Log Service`.
 
-1. In the **Group Policy Management Editor**, go to:
-   ```
-   Computer Configuration > Preferences > Windows Settings > Registry
-   ```
+4. **Select the Specific Event Log**:
+   - Choose the specific log you want to secure, such as **Application**, **System**, or **Security**. For example, for the PowerShell Operational log, you would find it under `Microsoft-Windows-PowerShell/Operational`.
 
-2. Right-click on **Registry**, select **New**, and then choose **Registry Item**.
+5. **Configure Log Security**:
+   - Double-click on **Configure log access** and input your SDDL string. This string specifies which users or groups have access to the logs.
+   - A common SDDL string for allowing only administrators might look like this:
+     ```
+     O:BAG:SYD:(A;;0x7;;;BA)(A;;0x3;;;SY)
+     ```
+     This string allows full access to administrators (BA) and system (SY), and denies access to all others.
 
-### 3. **Create Registry Items for Event Logs**
+6. **Apply the GPO**:
+   - Link the GPO to the appropriate Organizational Unit (OU) or domain.
 
-You will create a registry item for each log (Application, Security, and System) where you want to restrict access.
+### Important Considerations:
+- **Testing**: Before applying this GPO broadly, it’s important to test it on a subset of machines to ensure that the configuration behaves as expected.
+- **Registry Changes**: For logs that aren’t directly configurable through the Administrative Templates, you might need to use Group Policy Preferences to push registry changes that modify the `CustomSD` value under the appropriate registry keys.
 
-#### a. **Application Log**
-1. **Action**: Select **Update**.
-2. **Hive**: `HKEY_LOCAL_MACHINE`.
-3. **Key Path**: 
-   ```
-   SYSTEM\CurrentControlSet\Services\EventLog\Application
-   ```
-4. **Value Name**: `CustomSD`.
-5. **Value Type**: `REG_SZ`.
-6. **Value Data**: 
-   ```
-   O:BAG:SYD:(A;;0x1;;;SY)(A;;0x1;;;BA)
-   ```
+By following these steps, you can ensure that access to the PowerShell event logs is restricted to authorized users, thereby enhancing security.
 
-#### b. **Security Log**
-1. **Action**: Select **Update**.
-2. **Hive**: `HKEY_LOCAL_MACHINE`.
-3. **Key Path**: 
-   ```
-   SYSTEM\CurrentControlSet\Services\EventLog\Security
-   ```
-4. **Value Name**: `CustomSD`.
-5. **Value Type**: `REG_SZ`.
-6. **Value Data**: 
-   ```
-   O:BAG:SYD:(A;;0x1;;;SY)(A;;0x1;;;BA)
-   ```
-
-#### c. **System Log**
-1. **Action**: Select **Update**.
-2. **Hive**: `HKEY_LOCAL_MACHINE`.
-3. **Key Path**: 
-   ```
-   SYSTEM\CurrentControlSet\Services\EventLog\System
-   ```
-4. **Value Name**: `CustomSD`.
-5. **Value Type**: `REG_SZ`.
-6. **Value Data**: 
-   ```
-   O:BAG:SYD:(A;;0x1;;;SY)(A;;0x1;;;BA)
-   ```
-
-### 4. **Apply the GPO**
-
-1. After configuring the registry items for each event log, close the Group Policy Management Editor.
-2. Ensure the GPO is linked to the appropriate OU or the domain itself.
-
-### 5. **Force Group Policy Update on Client Machines**
-
-To apply the changes immediately, you can force a Group Policy update on client machines:
-
-```powershell
-gpupdate /force
-```
-
-### 6. **Verify the Changes**
-
-1. After the Group Policy is applied, check the event logs on a client machine to ensure that only administrators can view the logs.
-2. You can verify this by attempting to access the event logs as a non-admin user; access should be restricted.
-
-By following these steps, you will have successfully deployed the `CustomSD` registry values via Group Policy, restricting access to the specified event logs to only local or domain administrators.
+For more detailed information, you can refer to Microsoft’s official documentation and other trusted sources like SDM Software【15†source】【16†source】.
