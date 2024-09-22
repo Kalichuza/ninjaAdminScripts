@@ -1,7 +1,7 @@
 
 <#PSScriptInfo
 
-.VERSION 1.0.0
+.VERSION 1.0.1
 
 .GUID cd8aec00-3dd2-4f2e-8bd2-9004bc893591
 
@@ -25,8 +25,7 @@
 
 .EXTERNALSCRIPTDEPENDENCIES
 
-.RELEASENOTES
-
+.RELEASENOTES output is now an object instead of a formatted list
 
 .PRIVATEDATA
 
@@ -51,8 +50,7 @@ $computers = Get-ADComputer -Filter * -Property Name, LastLogonDate, LastLogonTi
     }
 }
 
-# Sort by LastLogon in descending order and display the results
-$computers | Sort-Object LastLogon -Descending | Format-Table -AutoSize
-
+# Sort by LastLogon in descending order and output the results
+$computers | Sort-Object LastLogon -Descending
 
 
