@@ -1,7 +1,7 @@
 
 <#PSScriptInfo
 
-.VERSION 1.0
+.VERSION 1.1
 
 .GUID 438564b9-0d8a-45bb-9da8-c91bd90d0117
 
@@ -69,9 +69,9 @@
     Specifies how the access rule is propagated to subfolders and files. Default is "None".
 
 .EXAMPLE
-    .\Set-FolderPermissions.ps1 -FolderPath "\\spdfs\Users\kjswart\Scans" -IdentityReference "saugertiesny\adminscanuser" -AccessRights Modify
+    .\Set-FolderPermissions.ps1 -FolderPath "\\SERVER\Users\username\Scans" -IdentityReference "DOMAIN\adminscanuser" -AccessRights Modify
 
-    Adds a Modify access rule for the user "saugertiesny\adminscanuser" to the specified folder.
+    Adds a Modify access rule for the user "DOMAIN\adminscanuser" to the specified folder.
 
 .EXAMPLE
     .\Set-FolderPermissions.ps1 -FolderPath "C:\Temp" -IdentityReference "BUILTIN\Users" -AccessRights Read -InheritanceFlags "ContainerInherit,ObjectInherit"
