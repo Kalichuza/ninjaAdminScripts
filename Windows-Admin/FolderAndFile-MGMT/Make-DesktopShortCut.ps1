@@ -1,7 +1,7 @@
 
 <#PSScriptInfo
 
-.VERSION 1.0
+.VERSION 1.1
 
 .GUID de6b9531-85d9-4717-b169-e015ac4a5e8f
 
@@ -35,7 +35,7 @@
 <# 
 
 .DESCRIPTION 
- Creates desktop Icom for the logged on user 
+ Creates desktop Icon for the logged on user 
 
 .EXAMPLE
 New-DesktopShortCut -LinkPath "C:\Windows\System32\notepad.exe" -LinkName "Notepad" -IconPath "C:\Windows\System32\notepad.ico"
