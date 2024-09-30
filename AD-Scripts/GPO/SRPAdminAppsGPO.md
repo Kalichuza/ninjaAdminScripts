@@ -1,4 +1,4 @@
-Yes, if most of the PCs in your environment are running **Windows 10 Pro** or **Windows 11 Pro**, then **AppLocker** will **not** be available to you. AppLocker is only available in **Windows 10/11 Enterprise** or **Education** editions, as well as **Windows Server**.
+If most of the PCs in your environment are running **Windows 10 Pro** or **Windows 11 Pro**, then **AppLocker** will **not** be available to you. AppLocker is only available in **Windows 10/11 Enterprise** or **Education** editions, as well as **Windows Server**.
 
 However, for **Windows 10/11 Pro** environments, you can achieve similar functionality using **Software Restriction Policies (SRP)**, though SRP is less granular and powerful compared to AppLocker.
 
