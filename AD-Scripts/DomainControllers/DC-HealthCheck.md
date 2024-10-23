@@ -72,9 +72,15 @@ The SYSVOL folder should be replicated properly for group policies and scripts.
 
 - **Command:**
   ```powershell
-  dfsrdiag health
+  dfsrdiag replicationstate
   ```
   This checks the status of DFSR replication. Make sure all domain controllers report the replication health as normal.
+
+- **Command:**
+  ```powershell
+  dfsrdiag pollad
+  ```
+This will trigger the DFSR service to update its configuration with the latest data from Active Directory.
 
 Alternatively, for environments using File Replication Service (FRS):
 ```powershell
