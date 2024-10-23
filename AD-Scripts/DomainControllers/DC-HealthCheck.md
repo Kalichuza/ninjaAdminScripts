@@ -82,6 +82,11 @@ The SYSVOL folder should be replicated properly for group policies and scripts.
   ```
 This will trigger the DFSR service to update its configuration with the latest data from Active Directory.
 
+-**Command:**
+```powershell
+dfsrdiag dumpadcfg /member:<ServerName>
+```
+
 Alternatively, for environments using File Replication Service (FRS):
 ```powershell
 ntfrsutl ds
