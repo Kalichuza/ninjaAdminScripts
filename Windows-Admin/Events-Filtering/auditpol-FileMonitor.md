@@ -14,15 +14,36 @@ Monitoring file access is crucial for maintaining the security and integrity of 
 #### Step 1: Enable Object Access Auditing
 First, you need to enable auditing for **Object Access** at the policy level. This will ensure that any configured SACLs will result in audit events being logged.
 
-Run the following command to enable auditing for both success and failure events related to object access:
+Run the following commands to enable auditing for both success and failure events related to object access:
 
 ```powershell
-auditpol /set /subcategory:"Object Access" /success:enable /failure:enable
+# Enable auditing for the Object Access subcategories one by one
+
+# File System auditing
+auditpol /set /subcategory:"File System" /success:enable /failure:enable
+
+# Registry auditing
+auditpol /set /subcategory:"Registry" /success:enable /failure:enable
+
+# Handle Manipulation auditing
+auditpol /set /subcategory:"Handle Manipulation" /success:enable /failure:enable
+
+# File Share auditing
+auditpol /set /subcategory:"File Share" /success:enable /failure:enable
 ```
-This command will allow you to log any attempts to access objects like files, directories, and registry keys, whether the access is successful or fails.
+**Explanation**:
+- **/subcategory** specifies which event type you are modifying.
+- **/success:enable** enables the auditing of successful events.
+- **/failure:enable** enables the auditing of failed events.
+
+If targeting a specific subcategory still fails, you can try enabling auditing for the **entire Object Access category**:
+
+```powershell
+auditpol /set /category:"Object Access" /success:enable /failure:enable
+```
 
 #### Step 2: Set SACLs on the File or Folder
-Once **Object Access** auditing is enabled, you need to define which files or folders you want to monitor. This involves setting a **System Access Control List (SACL)** for the target file or folder. You can do this using the **File Explorer** GUI or via **PowerShell** with the **`icacls`** or **`AuditPol`** command.
+Once **Object Access** auditing is enabled, you need to define which files or folders you want to monitor. This involves setting a **System Access Control List (SACL)** for the target file or folder. You can do this using the **File Explorer** GUI or via **PowerShell** with the **`icacls`** command.
 
 ##### Example Using File Explorer GUI
 1. **Right-click** the file or folder you want to monitor.
@@ -44,7 +65,7 @@ icacls "C:\example\sensitivefile.txt" /setaudit D:(A;;FA;;;S-1-1-0)
 - **FA**: Full Access permission.
 - **S-1-1-0**: Represents the **Everyone** group. This can be adjusted to a specific user or group.
 
-### Step 3: View the Audited Events
+#### Step 3: View the Audited Events
 Once the policy is enabled and SACLs are in place, events will be logged whenever someone accesses the monitored file or folder. You can find these events in the **Event Viewer**.
 
 To view file access events:
@@ -77,7 +98,9 @@ For larger environments, you may want to automate file monitoring setup using Po
 
 ```powershell
 # Enable Object Access auditing
-auditpol /set /subcategory:"Object Access" /success:enable /failure:enable
+# Set auditing for specific Object Access subcategories
+
+auditpol /set /subcategory:"File System" /success:enable /failure:enable
 
 # Set auditing for specific files or directories
 $filesToMonitor = @("C:\example\file1.txt", "C:\example\folder1")
@@ -89,7 +112,7 @@ foreach ($file in $filesToMonitor) {
 This script enables **Object Access** auditing and sets up file monitoring for the paths defined in `$filesToMonitor`. You can modify the access types and user/group as per your requirements.
 
 ### Summary
-File monitoring with **AuditPol** is a powerful way to maintain security and detect unauthorized access to critical resources. The key steps involve enabling **Object Access** auditing, setting **SACLs** on the resources to be monitored, and analyzing the resulting audit logs in **Event Viewer**. By carefully configuring these policies, you can significantly improve visibility over file access in your environment, ensuring that you are alerted to any suspicious activity.
+File monitoring with **AuditPol** is a powerful way to maintain security and detect unauthorized access to critical resources. The key steps involve enabling **Object Access** auditing, setting SACLs on the resources to be monitored, and analyzing the resulting audit logs in **Event Viewer**. By carefully configuring these policies, you can significantly improve visibility over file access in your environment, ensuring that you are alerted to any suspicious activity.
 
 If you have any specific scenarios you'd like to explore or need additional help setting up file monitoring, feel free to ask!
 
