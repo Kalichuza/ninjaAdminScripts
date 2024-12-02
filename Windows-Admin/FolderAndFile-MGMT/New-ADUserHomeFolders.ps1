@@ -4,13 +4,13 @@ Function New-ADUserHomeFolders {
     [CmdletBinding()]
     Param (
         [Parameter(Mandatory)]
-        [string]$BaseFolderPath,           # The parent directory (e.g., D:\Company\HomeDrives)
+        [string]$BaseFolderPath,           # The parent directory (e.g., D:\HomeDrives)
 
         [Parameter(Mandatory)]
         [int]$DaysAgo,                    # The number of days in the past to filter users by (e.g., 30 for last 30 days)
 
         [Parameter(Mandatory)]
-        [string]$SearchBase               # The AD OU to search in (e.g., "OU=Users,OU=MyBusiness,DC=nppd,DC=local")
+        [string]$SearchBase               # The AD OU to search in (e.g., "OU=Users,DC=domain,DC=local")
     )
 
     # Define the cutoff date
