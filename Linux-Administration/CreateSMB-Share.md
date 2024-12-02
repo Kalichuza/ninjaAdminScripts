@@ -18,19 +18,13 @@ sudo mkdir -p /srv/samba/shared
 
 ---
 
-### **Step 3: Set Directory Ownership and Permissions**
-Set permissions so only the dedicated user (`smbuser`) can access this directory:
 
-```bash
-sudo chown smbuser:smbuser /srv/samba/shared
-sudo chmod 2770 /srv/samba/shared
-```
 
 This ensures that `smbuser` and members of the same group can access the share.
 
 ---
 
-### **Step 4: Add a Samba User**
+### **Step 3: Add a Samba User**
 Create a dedicated user if it doesn’t already exist:
 
 ```bash
@@ -45,7 +39,14 @@ sudo smbpasswd -e smbuser
 ```
 
 ---
+### **Step 4: Set Directory Ownership and Permissions**
+Set permissions so only the dedicated user (`smbuser`) can access this directory:
 
+```bash
+sudo chown smbuser:smbuser /srv/samba/shared
+sudo chmod 2770 /srv/samba/shared
+```
+---
 ### **Step 5: Configure Samba**
 Edit the Samba configuration file to define the share:
 
