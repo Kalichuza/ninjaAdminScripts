@@ -57,12 +57,16 @@ Add the following configuration at the bottom of the file:
 
 ```ini
 [shared]
-path = /srv/samba/shared
-browseable = yes
-writable = yes
-create mask = 0770
-directory mask = 0770
-valid users = smbuser
+   path = /srv/samba/shared/
+   read only = No
+   create mask = 0770
+   directory mask = 0770
+   browsable = yes
+   writable = yes
+   guest ok = no
+   valid users = smbuser
+   force group = smbuser
+
 ```
 
 Save and exit the editor (`Ctrl+O`, `Enter`, `Ctrl+X`).
