@@ -10,4 +10,4 @@ param (
     [string]$logFilePath
 )
 
-robocopy $source $destination /E /ETA /R:3 /W:5 /TEE /LOG:$logFilePath
+robocopy $source $destination /E /ETA /R:3 /W:5 /TEE /LOG:$logFilePath /Z
