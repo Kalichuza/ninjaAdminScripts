@@ -63,7 +63,7 @@
     Adds the directory 'C:\Tools\fping' to the current user's PATH variable.
 
 .NOTES
-    Author: Your Name
+    Author: kalichuza
     Date: October 7, 2024
     Version: 1.0
 
