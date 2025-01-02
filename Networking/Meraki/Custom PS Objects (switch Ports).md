@@ -38,7 +38,7 @@ $portObject = @{
 }
 $bodyJson = $portObject | ConvertTo-Json
 
-Set-MerakiDeviceSwitchPort -AuthToken $token -Serial $switchSerial -PortId 17 -PortSettings $bodyJson
+Set-MerakiDeviceSwitchPort -AuthToken $token -DeviceSerial $serial -PortId 17 -PortConfig $bodyJson
 ```
 
 (See the docs/help for the exact parameter name—some versions want `-SwitchPort` or `-PortSettings` vs. each key individually.)
