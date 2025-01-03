@@ -1,131 +1,150 @@
+
 <#PSScriptInfo
 
-.VERSION 1.0
+.VERSION 1.2
 
-.GUID 1571d4f1-158a-48c8-af20-5a171b6430ba
+.GUID 7edf5e62-7b9a-4f57-ac18-c73a7be301f8
 
 .AUTHOR Kalichuza
 
-.COMPANYNAME Kalichuza
+.COMPANYNAME
 
-.COPYRIGHT (c) 2025 Kalichuza. All rights reserved.
+.COPYRIGHT
 
-.TAGS Chrome, json, bookmarks
+.TAGS
 
-.LICENSEURI https://opensource.org/licenses/MIT
+.LICENSEURI
 
-.PROJECTURI 
+.PROJECTURI
 
-.ICONURI 
+.ICONURI
 
 .EXTERNALMODULEDEPENDENCIES 
 
-.REQUIREDSCRIPTS 
+.REQUIREDSCRIPTS
 
-.EXTERNALSCRIPTDEPENDENCIES 
+.EXTERNALSCRIPTDEPENDENCIES
 
-.RELEASENOTES
+.RELEASENOTES Worked out a bug that left some bookmarks out of the JSON output.
 
 
 .PRIVATEDATA
 
-
-#>
-<#
-
-.DESCRIPTION
-Converts a Chrome bookmarks from the html backup to Json.
-
 #>
 
+<# 
 
+.DESCRIPTION 
+ Converts Chrome bookmarks from an HTML backup to JSON. 
 
-[CmdletBinding()]
+#> 
+
 param (
-    [Parameter(Mandatory=$true)]
-    [string]$HtmlBookmarksPath,  # Path to the HTML bookmarks file
-
-    [Parameter(Mandatory=$true)]
-    [string]$JsonBookmarksPath   # Path to save the converted JSON file
+    [string]$inputFile,
+    [string]$outputFile
 )
 
-function Convert-HtmlToJsonBookmarks {
-    param (
-        [string]$HtmlFilePath,
-        [string]$JsonFilePath
-    )
-
-    # Read the HTML file content
-    $htmlContent = Get-Content -Path $HtmlFilePath -Raw
-
-    # Initialize an empty bookmarks structure with metadata
-    $bookmarks = @{
-        checksum = ""
-        roots = @{
-            bookmark_bar = @{
-                children = @()
-                date_added = "13334704963909862"
-                date_last_used = "0"
-                date_modified = "0"
-                guid = [guid]::NewGuid().ToString()
-                id = "1"
-                name = "Bookmarks bar"
-                type = "folder"
-            }
-            other = @{
-                children = @()
-                date_added = "13334704963909864"
-                date_last_used = "0"
-                date_modified = "0"
-                guid = [guid]::NewGuid().ToString()
-                id = "2"
-                name = "Other bookmarks"
-                type = "folder"
-            }
-            synced = @{
-                children = @()
-                date_added = "13334704963909864"
-                date_last_used = "0"
-                date_modified = "0"
-                guid = [guid]::NewGuid().ToString()
-                id = "3"
-                name = "Mobile bookmarks"
-                type = "folder"
-            }
-        }
-        version = 1
-    }
-
-    # Regular expression to match each bookmark
-    $bookmarkRegex = '<A HREF="([^"]+)" ADD_DATE="([^"]+)">([^<]+)</A>'
-
-    # Process each bookmark and add it to the JSON structure
-    $idCounter = 4
-    foreach ($match in [regex]::Matches($htmlContent, $bookmarkRegex)) {
-        $unixTimestamp = $match.Groups[2].Value
-        $guid = [guid]::NewGuid().ToString()
-        $fileTime = ([datetime]'1970-01-01').AddSeconds($unixTimestamp).ToFileTimeUtc().ToString()
-
-        $bookmarks.roots.bookmark_bar.children += @{
-            type = "url"
-            name = $match.Groups[3].Value
-            url = $match.Groups[1].Value
-            date_added = $fileTime
-            guid = $guid
-            id = "$idCounter"
-        }
-        $idCounter++
-    }
-
-    # Compute checksum (a simple dummy checksum for now; adjust as needed)
-    $bookmarks.checksum = "1e54fbb25d92a354f7aeaf576726429e"
-
-    # Convert to JSON and save to the specified path
-    $jsonContent = $bookmarks | ConvertTo-Json -Depth 10
-    Set-Content -Path $JsonFilePath -Value $jsonContent
-
-    Write-Host "Bookmarks converted and saved to $JsonFilePath"
+function Convert-ToChromeTimestamp {
+    param ([string]$unixTime)
+    # Convert Unix timestamp to Chrome's timestamp format (microseconds since 1601-01-01)
+    return [math]::Round(([double]$unixTime * 1000000) + 11644473600000000).ToString()
 }
 
-# Call the function with provided parameters
-Convert-HtmlToJsonBookmarks -HtmlFilePath $HtmlBookmarksPath -JsonFilePath $JsonBookmarksPath
+function Generate-Guid {
+    # Generate a random GUID
+    return [guid]::NewGuid().ToString()
+}
+
+function Parse-Bookmarks {
+    param (
+        [string]$content,
+        [int]$idCounter
+    )
+
+    $bookmarks = @()
+
+    # Regex for bookmarks
+    $bookmarkRegex = '<A HREF="(.*?)".*?ADD_DATE="(\d+)".*?>(.*?)<\/A>'
+    $matches = [regex]::Matches($content, $bookmarkRegex)
+
+    foreach ($match in $matches) {
+        $bookmark = [PSCustomObject]@{
+            name          = $match.Groups[3].Value
+            url           = $match.Groups[1].Value
+            type          = 'url'
+            id            = ($idCounter++).ToString()
+            guid          = Generate-Guid
+            date_added    = Convert-ToChromeTimestamp -unixTime $match.Groups[2].Value
+            date_last_used = "0"
+        }
+        $bookmarks += $bookmark
+    }
+
+    return $bookmarks
+}
+
+function Convert-BookmarksToJSON {
+    param (
+        [string]$filePath
+    )
+
+    # Read the HTML content
+    $htmlContent = Get-Content -Path $filePath -Raw
+    $htmlContent = $htmlContent -replace '\r', '' -replace '\n', '' # Normalize line endings
+
+    # Parse bookmarks into the "Bookmarks bar"
+    $bookmarks = Parse-Bookmarks -content $htmlContent -idCounter 1
+
+    # Construct output object
+    $outputObject = [PSCustomObject]@{
+        checksum = [BitConverter]::ToString(
+            [System.Security.Cryptography.MD5]::Create().ComputeHash(
+                [System.Text.Encoding]::UTF8.GetBytes($htmlContent)
+            )
+        ).Replace("-", "").ToLower()
+        version  = 1
+        roots    = [PSCustomObject]@{
+            bookmark_bar = [PSCustomObject]@{
+                name         = "Bookmarks bar"
+                type         = "folder"
+                id           = "1"
+                guid         = Generate-Guid
+                date_added   = Convert-ToChromeTimestamp -unixTime ([datetime]::UtcNow.ToFileTimeUtc() / 10000000 - 11644473600)
+                date_modified = "0"
+                date_last_used = "0"
+                children     = $bookmarks
+            }
+            other        = [PSCustomObject]@{
+                name         = "Other bookmarks"
+                type         = "folder"
+                id           = "2"
+                guid         = Generate-Guid
+                date_added   = Convert-ToChromeTimestamp -unixTime ([datetime]::UtcNow.ToFileTimeUtc() / 10000000 - 11644473600)
+                date_modified = "0"
+                date_last_used = "0"
+                children     = @()
+            }
+            synced       = [PSCustomObject]@{
+                name         = "Mobile bookmarks"
+                type         = "folder"
+                id           = "3"
+                guid         = Generate-Guid
+                date_added   = Convert-ToChromeTimestamp -unixTime ([datetime]::UtcNow.ToFileTimeUtc() / 10000000 - 11644473600)
+                date_modified = "0"
+                date_last_used = "0"
+                children     = @()
+            }
+        }
+    }
+
+    return $outputObject
+}
+
+try {
+    Write-Output "Processing file: $inputFile"
+    $jsonOutput = Convert-BookmarksToJSON -filePath $inputFile
+    $jsonOutput | ConvertTo-Json -Depth 10 | Set-Content -Path $outputFile -Encoding UTF8
+    Write-Output "Bookmarks converted successfully to JSON and saved to $outputFile"
+} catch {
+    Write-Output "An error occurred: $_"
+}
