@@ -1,3 +1,23 @@
+<#PSScriptInfo
+.VERSION 1.0
+.GUID 1571d4f1-158a-48c8-af20-5a171b6430ba
+.AUTHOR Kalichuza
+.COMPANYNAME Kalichuza
+.COPYRIGHT (c) 2025 Kalichuza. All rights reserved.
+.TAGS Chrome, JSON, bookmarks, conversion
+.LICENSEURI https://opensource.org/licenses/MIT
+.PROJECTURI https://github.com/kalichuza/Convert-ChromeBookmarks
+.ICONURI 
+.EXTERNALMODULEDEPENDENCIES 
+.REQUIREDSCRIPTS 
+.EXTERNALSCRIPTDEPENDENCIES 
+.RELEASENOTES Initial release of the Chrome Bookmarks HTML to JSON converter.
+.PRIVATEDATA
+#>
+
+
+
+
 [CmdletBinding()]
 param (
     [Parameter(Mandatory=$true)]
